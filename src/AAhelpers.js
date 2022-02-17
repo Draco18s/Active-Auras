@@ -46,6 +46,7 @@ class AAhelpers {
     static CheckType(canvasToken, type) {
         switch (game.system.id) {
             case ("dnd5e"): ;
+            case ("pf1"): return AAhelpers.typeCheck5e(canvasToken, type)
             case ("sw5e"): return AAhelpers.typeCheck5e(canvasToken, type)
             case ("swade"): return AAhelpers.typeCheckSWADE(canvasToken, type);
         }
@@ -63,7 +64,10 @@ class AAhelpers {
                 break;
             case "character": {
                 try {
-                    if (game.system.data.name === "sw5e") {
+                    if (game.system.data.name === "pf1") {
+                        tokenType = actor.race.data.data.creatureType.toLowerCase();
+                    }
+                    else if (game.system.data.name === "sw5e") {
                         tokenType = canvasToken.actor?.data.data.details.species.toLowerCase();
                     }
                     else tokenType = [canvasToken.actor?.data.data.details.race.toLowerCase().replace("-", " ").split(" ")];
@@ -77,6 +81,9 @@ class AAhelpers {
         let humanoidRaces;
         if (game.system.data.name === "sw5e") {
             humanoidRaces = ["abyssin", "aingtii", "aleena", "anzellan", "aqualish", "arcona", "ardennian", "arkanian", "balosar", "barabel", "baragwin", "besalisk", "bith", "bothan", "cathar", "cerean", "chadrafan", "chagrian", "chevin", "chironian", "chiss", "clawdite", "codruji", "colicoid", "dashade", "defel", "devoronian", "draethos", "dug", "duros", "echani", "eshkha", "ewok", "falleen", "felucian", "fleshraider", "gamorrean", "gand", "geonosian", "givin", "gotal", "gran", "gungan", "halfhuman", "harch", "herglic", "ho’din", "human", "hutt", "iktotchi", "ithorian", "jawa", "kage", "kaleesh", "kaminoan", "karkarodon", "keldor", "killik", "klatooinian", "kubaz", "kushiban", "kyuzo", "lannik", "lasat", "lurmen", "miraluka", "mirialan", "moncalamari", "mustafarian", "muun", "nautolan", "neimoidian", "noghri", "ortolan", "patrolian", "pau’an", "pa’lowick", "pyke", "quarren", "rakata", "rattataki", "rishii", "rodian", "ryn", "selkath", "shistavanen", "sithpureblood", "squib", "ssiruu", "sullustan", "talz", "tarasin", "thisspiasian", "togorian", "togruta", "toydarian", "trandoshan", "tusken", "twi'lek", "ugnaught", "umbaran", "verpine", "voss", "vurk", "weequay", "wookie", "yevetha", "zabrak", "zeltron", "zygerrian"];
+        }
+		else if (game.system.data.name === "pf1") {
+            humanoidRaces = ["human", "orc", "elf", "gnome", "dwarf", "half-elf", "halfling", "half-orc", "catfolk", "dhampir", "drow", "goblin", "hobgoblin", "kobold", "ratfolk", "tengu", "changeling", "duergar", "gillman", "grippli", "kitsune", "merfolk", "nagaji", "samsaran", "strix", "svirfneblin", "vanara", "vishkanya", "wayang", "android", "monkey goblin", "lashunta"];
         }
         else humanoidRaces = ["human", "orc", "elf", "tiefling", "gnome", "aaracokra", "dragonborn", "dwarf", "halfling", "leonin", "satyr", "genasi", "goliath", "aasimar", "bugbear", "firbolg", "goblin", "lizardfolk", "tabxi", "triton", "yuan-ti", "tortle", "changling", "kalashtar", "shifter", "warforged", "gith", "centaur", "loxodon", "minotaur", "simic hybrid", "vedalken", "verdan", "locathah", "grung"];
 
@@ -127,6 +134,7 @@ class AAhelpers {
     static HPCheck(token) {
         switch (game.system.id) {
             case "dnd5e": ;
+            case "pf1":
             case "sw5e": {
                 if (getProperty(token, "actor.data.data.attributes.hp.value") <= 0) return false
                 else return true

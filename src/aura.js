@@ -124,7 +124,7 @@ class ActiveAuras {
         if (canvasToken.actor === null) return;
         if (canvasToken.actor.data.type == "vehicle") return
         let tokenAlignment;
-        if (game.system.id === "dnd5e" || game.system.id === "sw5e") {
+        if (game.system.id === "dnd5e" || game.system.id === "sw5e" || game.system.id === "pf1") {
             try {
                 tokenAlignment = canvasToken.actor?.data.data.details.alignment.toLowerCase();
             } catch (error) {
