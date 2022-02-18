@@ -141,7 +141,6 @@ class ActiveAuras {
             checkEffects.forEach(e => duplicateEffect = (MapObject.effects.filter(i => (i.data?.label === e.data?.label) && i.entityId !== tokenId)));
             checkEffects = checkEffects.concat(duplicateEffect)
         }
-		if (AAdebug) { console.log(checkEffects) }
         for (const auraEffect of checkEffects) {
             const auraTargets = auraEffect.data.flags?.ActiveAuras?.aura
 
@@ -312,7 +311,6 @@ class ActiveAuras {
             if (tokenEffects.data.label === effectLabel && tokenEffects.data.flags?.ActiveAuras?.applied === true) {
                 await token.actor.deleteEmbeddedDocuments("ActiveEffect", [tokenEffects.id])
                 console.log(game.i18n.format("ACTIVEAURAS.RemoveLog", { effectDataLabel: effectLabel, tokenName: token.name }))
-
             }
         }
     }

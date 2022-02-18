@@ -27,7 +27,6 @@ function getTemplateShape(template) {
 }
 
 function getAuraShape(source, radius) {
-	if (AAdebug) { console.log(canvas) }
     const gs = canvas.dimensions.size
     const gd = gs / canvas.dimensions.distance
     return new PIXI.Circle(source.center.x, source.center.y, ((radius * gd) + (source.data.width / 2 * gs)))
