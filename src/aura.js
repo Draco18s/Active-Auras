@@ -146,6 +146,7 @@ class ActiveAuras {
             const auraTargets = auraEffect.data.flags?.ActiveAuras?.aura
 
             const { radius, height, hostile, wildcard, extra } = auraEffect.data.flags?.ActiveAuras;
+			if (AAdebug) { console.log(auraEffect.data.flags?.ActiveAuras) }
             let { type, alignment } = auraEffect.data.flags?.ActiveAuras;
             const { parentActorLink, parentActorId } = auraEffect
             type = type !== undefined ? type.toLowerCase() : "";

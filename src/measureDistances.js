@@ -96,6 +96,7 @@ class AAmeasure {
      * @returns boolean
      */
     static boundingCheck(t1, t2, radius) {
+		if (AAdebug) console.log(radius)
         let { size, distance } = canvas.dimensions
         let rad = (radius / distance) * size
         const xMax = t2.data.x + rad + t2.w + size
@@ -109,6 +110,7 @@ class AAmeasure {
             let check = canvas.foreground.addChild(g)
             check.boundingCheck = true
         }
+		if (AAdebug) console.log(xMin + " < " + t1.data.x + " < " + xMax)
         return !(t1.data.x < xMin || t1.data.x > xMax || t1.data.y > yMax || t1.data.y < yMin);
     }
 
