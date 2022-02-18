@@ -10,8 +10,11 @@ class AAmeasure {
     static inAura(target, source, wallblocking = false, auraHeight, radius, shape) {
         const gs = canvas.dimensions.size
         const g2 = gs / 2;
-
-        if (!AAmeasure.boundingCheck(target, source, radius)) return false;
+		if (AAdebug) console.log("inAura begin")
+        if (!AAmeasure.boundingCheck(target, source, radius)) {
+			if (AAdebug) console.log("boundingCheck failed")
+			return false;
+		}
         const auraPoly = shape
         if (AAdebug && shape) {
             canvas.foreground.children.find(i => i.inAura)?.destroy()
@@ -40,7 +43,8 @@ class AAmeasure {
                 { x: target.x + g2, y: target.y + (target.data.height * gs) - g2, collides: false },
                 { x: target.x + (target.data.width * gs) - g2, y: target.y + (target.data.height * gs) - g2, collides: false }
             ]
-
+		if (AAdebug) console.log(sourceCorners)
+		if (AAdebug) console.log(targetCorners)
         for (let t of targetCorners) {
             if (!auraPoly.contains(t.x, t.y)) continue; // quick exit if not in the aura
 

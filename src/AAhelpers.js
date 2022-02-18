@@ -206,7 +206,7 @@ class AAhelpers {
 
     static scrollingText(wrapped, ...args) {
         if (game.settings.get("ActiveAuras", "scrollingAura")) {
-            if (this.data.flags["ActiveAuras"]?.applied && game.system.id != "pf1") { this.isSuppressed = true }
+            if (this.data.flags["ActiveAuras"]?.applied) { this.isSuppressed = true }
         }
         return wrapped(...args)
     }
