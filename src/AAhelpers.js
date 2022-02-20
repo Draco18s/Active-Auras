@@ -196,49 +196,25 @@ class AAhelpers {
     static applyWrapper(wrapped, ...args) {
         let actor = args[0]
         let change = args[1]
-		if(game.system.id == "pf1") {
-			try{
-				actor.changes.push(
-					change
-				);
-				console.log("Change 1 success");
-			}
-			catch(e) {
-
-			}
-			try{
-				actor.changes.push(
-					change.effect
-				);
-				console.log("Change 2 success");
-			}
-			catch(e) {
-				
-			}try{
-				actor.changes.push(
-					change.effect.data.changes[0]
-				);
-				console.log("Change 3 success");
-			}
-			catch(e) {
-				
-			}
-			/*actor.changes.push(
-				ItemChange.create({
-					formula: change.effect.data,
-					target: ,
-					subTarget: ,
-					modifier: ,
-					source: ,
-				  })
-			
-			)*/
-		}
         if (change.effect.data.flags?.ActiveAuras?.ignoreSelf) {
             console.log(game.i18n.format("ACTIVEAURAS.IgnoreSelfLog", { effectDataLabel: change.effect.data.label, changeKey: change.key, actorName: actor.name }));
             args[1] = {}
             return wrapped(...args);
         }
+		if(game.system.id == "pf1") {
+			for (let eff of change.effect.data._source.changes) {
+				actor.changes.push(
+					ItemChange.create({
+						formula: eff.formula,
+						target: eff.target,
+						subTarget: eff.subTarget,
+						modifier: eff.modifier,
+						source: change.effect.data.label,
+					})
+				
+				)
+			}
+		}
         return wrapped(...args)
     }
 
