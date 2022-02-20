@@ -196,12 +196,36 @@ class AAhelpers {
     static applyWrapper(wrapped, ...args) {
         let actor = args[0]
         let change = args[1]
-		console.log("Applying " + change.effect.data.label + " to " + actor.name);
-		console.log(change);
 		if(game.system.id == "pf1") {
+			try{
+				actor.changes.push(
+					change
+				);
+				console.log("Change 1 success");
+			}
+			catch(e) {
+
+			}
+			try{
+				actor.changes.push(
+					change.effect
+				);
+				console.log("Change 2 success");
+			}
+			catch(e) {
+				
+			}try{
+				actor.changes.push(
+					change.effect.data.changes[0]
+				);
+				console.log("Change 3 success");
+			}
+			catch(e) {
+				
+			}
 			/*actor.changes.push(
 				ItemChange.create({
-					formula: ,
+					formula: change.effect.data,
 					target: ,
 					subTarget: ,
 					modifier: ,
