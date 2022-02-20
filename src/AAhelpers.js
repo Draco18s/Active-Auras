@@ -1,3 +1,5 @@
+import { ItemChange } from "https://assets.forge-vtt.com/bazaar/systems/pf1/0.80.9/module//item/components/change.js";
+
 class AAhelpers {
     /**
      * 
