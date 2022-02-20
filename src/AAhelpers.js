@@ -196,6 +196,20 @@ class AAhelpers {
     static applyWrapper(wrapped, ...args) {
         let actor = args[0]
         let change = args[1]
+		console.log("Applying " + change.effect.data.label + " to " + actor.name);
+		console.log(change);
+		if(game.system.id == "pf1") {
+			/*actor.changes.push(
+				ItemChange.create({
+					formula: ,
+					target: ,
+					subTarget: ,
+					modifier: ,
+					source: ,
+				  })
+			
+			)*/
+		}
         if (change.effect.data.flags?.ActiveAuras?.ignoreSelf) {
             console.log(game.i18n.format("ACTIVEAURAS.IgnoreSelfLog", { effectDataLabel: change.effect.data.label, changeKey: change.key, actorName: actor.name }));
             args[1] = {}
