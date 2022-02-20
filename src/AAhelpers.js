@@ -1,5 +1,3 @@
-import { ItemChange } from "https://assets.forge-vtt.com/bazaar/systems/pf1/0.80.9/module//item/components/change.js";
-
 class AAhelpers {
     /**
      * 
@@ -205,15 +203,23 @@ class AAhelpers {
         }
 		if(game.system.id == "pf1") {
 			for (let eff of change.effect.data._source.changes) {
+				let [firstval] = actor.changes.values();
+				let ch = Object.create(firstval);
+				ch.formula = eff.formula;
+				ch.target = eff.target;
+				ch.subTarget = eff.subTarget;
+				ch.modifier = eff.modifier;
+				ch.source = eff.change.effect.data.label;
+				ch.operator = eff.operator;
 				actor.changes.push(
-					ItemChange.create({
+					ch
+					/*ItemChange.create({
 						formula: eff.formula,
 						target: eff.target,
 						subTarget: eff.subTarget,
 						modifier: eff.modifier,
 						source: change.effect.data.label,
-					})
-				
+					})*/
 				)
 			}
 		}
