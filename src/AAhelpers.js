@@ -204,7 +204,7 @@ class AAhelpers {
 		if(game.system.id == "pf1") {
 			for (let eff of change.effect.data._source.changes) {
 				actor.changes.push(
-					ItemChange.create({
+					game.pf1.documentComponents.ItemChange.create({
 						formula: eff.formula,
 						target: eff.target,
 						subTarget: eff.subTarget,
