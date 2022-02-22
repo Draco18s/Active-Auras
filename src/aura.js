@@ -14,91 +14,96 @@ class ActiveAuras {
     static async MainAura(movedToken, source, sceneID) {
         let perfStart;
         let perfEnd;
-        if (AAdebug) { perfStart = performance.now() }
-        if (typeof movedToken?.documentName !== "string") movedToken = movedToken?.document ?? undefined
-        if (AAdebug) { console.log(source) }
-        if (!AAgm) return;
-        const sceneCombat = game.combats.filter(c => c.scene?.id === sceneID)
-        if (game.settings.get("ActiveAuras", "combatOnly") && !sceneCombat[0]?.started) {
-            if (AAdebug) { console.warn("Active Auras not active when not in combat") }
-            return;
-        }
-        if (sceneID !== canvas.id) return ui.notifications.warn("An update was called on a non viewed scene, auras will be updated when you return to that scene")
+		try {
+			if (AAdebug) { perfStart = performance.now() }
+			if (typeof movedToken?.documentName !== "string") movedToken = movedToken?.document ?? undefined
+			if (AAdebug) { console.log(source) }
+			if (!AAgm) return;
+			const sceneCombat = game.combats.filter(c => c.scene?.id === sceneID)
+			if (game.settings.get("ActiveAuras", "combatOnly") && !sceneCombat[0]?.started) {
+				if (AAdebug) { console.warn("Active Auras not active when not in combat") }
+				return;
+			}
+			if (sceneID !== canvas.id) return ui.notifications.warn("An update was called on a non viewed scene, auras will be updated when you return to that scene")
 
-        let map = new Map();
-        let updateTokens = canvas.tokens.placeables
-        let auraTokenId;
+			let map = new Map();
+			let updateTokens = canvas.tokens.placeables
+			let auraTokenId;
 
-        if (movedToken !== undefined) {
-            if (AAhelpers.IsAuraToken(movedToken, sceneID)) {
-                auraTokenId = movedToken.data._id
-            }
-            else if (getProperty(movedToken, "flags.token-attacher")) {
-                if (AAdebug) console.log("ActiveAuras: token attacher movement")
-            }
-            else {
-                updateTokens = [canvas.tokens.get(movedToken.id)];
-            }
-        }
-        map = ActiveAuras.UpdateAllTokens(map, updateTokens, auraTokenId)
-        if (AAdebug) {
-            perfEnd = performance.now()
-            console.log(`Active Auras Find Auras took ${perfEnd - perfStart} ms, FPS:${Math.round(canvas.app.ticker.FPS)}`)
-        }
+			if (movedToken !== undefined) {
+				if (AAhelpers.IsAuraToken(movedToken, sceneID)) {
+					auraTokenId = movedToken.data._id
+				}
+				else if (getProperty(movedToken, "flags.token-attacher")) {
+					if (AAdebug) console.log("ActiveAuras: token attacher movement")
+				}
+				else {
+					updateTokens = [canvas.tokens.get(movedToken.id)];
+				}
+			}
+			map = ActiveAuras.UpdateAllTokens(map, updateTokens, auraTokenId)
+			if (AAdebug) {
+				perfEnd = performance.now()
+				console.log(`Active Auras Find Auras took ${perfEnd - perfStart} ms, FPS:${Math.round(canvas.app.ticker.FPS)}`)
+			}
 
-        for (const mapEffect of map) {
-            const MapKey = mapEffect[0]
-            map.set(MapKey, { add: mapEffect[1].add, token: mapEffect[1].token, effect: mapEffect[1].effect.data })
-        }
-        if (AAdebug) console.log(map)
+			for (const mapEffect of map) {
+				const MapKey = mapEffect[0]
+				map.set(MapKey, { add: mapEffect[1].add, token: mapEffect[1].token, effect: mapEffect[1].effect.data })
+			}
+			if (AAdebug) console.log(map)
 
 
 
-        map.forEach(compareMap)
+			map.forEach(compareMap)
 
-        /**
-         * 
-         * @param {map value} value 
-         * @param {map key} key 
-         * @param {map object} map1 
-         * Loop over the map to remove any "add.false" entries where a "add.true" is present, prevents odd ordering from removing auras when in range of 2 or more of the same aura
-         * Where 2 of the same type of aura are present, choose the higher of the 2 values to update too
-         */
-        function compareMap(value, key, map1) {
-            const iterator1 = map1[Symbol.iterator]();
-            for (const m of iterator1) {
-                if (m[0] === key) continue;
+			/**
+			 * 
+			 * @param {map value} value 
+			 * @param {map key} key 
+			 * @param {map object} map1 
+			 * Loop over the map to remove any "add.false" entries where a "add.true" is present, prevents odd ordering from removing auras when in range of 2 or more of the same aura
+			 * Where 2 of the same type of aura are present, choose the higher of the 2 values to update too
+			 */
+			function compareMap(value, key, map1) {
+				const iterator1 = map1[Symbol.iterator]();
+				for (const m of iterator1) {
+					if (m[0] === key) continue;
 
-                if ((m[1].effect.label === value.effect.label) && (m[1].add === true && value.add === true)) {
-                    for (let e = 0; e < m[1].effect.changes.length; e++) {
-                        if (typeof (parseInt(m[1].effect.changes[e].value)) !== "number") continue;
-                        const oldEffectValue = parseInt(value.effect.changes[e].value);
-                        const newEffectValue = parseInt(m[1].effect.changes[e].value)
-                        if (oldEffectValue < newEffectValue) {
-                            map1.delete(key)
-                        }
-                    }
-                }
+					if ((m[1].effect.label === value.effect.label) && (m[1].add === true && value.add === true)) {
+						for (let e = 0; e < m[1].effect.changes.length; e++) {
+							if (typeof (parseInt(m[1].effect.changes[e].value)) !== "number") continue;
+							const oldEffectValue = parseInt(value.effect.changes[e].value);
+							const newEffectValue = parseInt(m[1].effect.changes[e].value)
+							if (oldEffectValue < newEffectValue) {
+								map1.delete(key)
+							}
+						}
+					}
 
-                else if ((m[1].effect.label === value.effect.label) && (m[1].add === true || value.add === true) && (m[1].token.id === value.token.id)) {
-                    if (value.add === false) map.delete(key)
-                }
-            }
+					else if ((m[1].effect.label === value.effect.label) && (m[1].add === true || value.add === true) && (m[1].token.id === value.token.id)) {
+						if (value.add === false) map.delete(key)
+					}
+				}
 
-        }
+			}
 
-        for (const update of map) {
-            if (update[1].add) {
-                await ActiveAuras.CreateActiveEffect(update[1].token.id, update[1].effect)
-            }
-            else {
-                await ActiveAuras.RemoveActiveEffects(update[1].token.id, update[1].effect.label)
-            }
-        }
-        if (AAdebug) {
-            perfEnd = performance.now()
-            console.log(`Active Auras Main Function took ${perfEnd - perfStart} ms, FPS:${Math.round(canvas.app.ticker.FPS)}`)
-        }
+			for (const update of map) {
+				if (update[1].add) {
+					await ActiveAuras.CreateActiveEffect(update[1].token.id, update[1].effect)
+				}
+				else {
+					await ActiveAuras.RemoveActiveEffects(update[1].token.id, update[1].effect.label)
+				}
+			}
+			if (AAdebug) {
+				perfEnd = performance.now()
+				console.log(`Active Auras Main Function took ${perfEnd - perfStart} ms, FPS:${Math.round(canvas.app.ticker.FPS)}`)
+			}
+		}
+		catch(e) {
+			console.log(e);
+		}
     }
 
     /**
@@ -298,10 +303,16 @@ class ActiveAuras {
         }
 		if(game.system.id === "pf1") {
 			//await token.actor.update(effectData);
-			await token.actor.createEmbeddedDocuments("Item", [effectData]);
+			try {
+				await token.actor.createEmbeddedDocuments("Item", [tokenEffects.id]);
+			}
+			catch(e) {
+				console.log(e);
+			}
 		}
 		else {
-        	await token.actor.createEmbeddedDocuments("ActiveEffect", [effectData]);
+			if(!AAdisable)
+        		await token.actor.createEmbeddedDocuments("ActiveEffect", [effectData]);
 		}
         console.log(game.i18n.format("ACTIVEAURAS.ApplyLog", { effectDataLabel: effectData.label, tokenName: token.name }))
 		console.log(effectData);
@@ -318,10 +329,18 @@ class ActiveAuras {
             if (tokenEffects.data.label === effectLabel && tokenEffects.data.flags?.ActiveAuras?.applied === true) {
 				if(game.system.id === "pf1") {
 					//await token.actor.update(effectData);
-					await token.actor.deleteEmbeddedDocuments("Item", [tokenEffects.id]);
+					if(!AAdisable) {
+						try {
+							await token.actor.deleteEmbeddedDocuments("Item", [tokenEffects.id]);
+						}
+						catch(e) {
+							console.log(e);
+						}
+					}
 				}
 				else {
-	                await token.actor.deleteEmbeddedDocuments("ActiveEffect", [tokenEffects.id])
+					if(!AAdisable)
+	                	await token.actor.deleteEmbeddedDocuments("ActiveEffect", [tokenEffects.id])
 				}
                 console.log(game.i18n.format("ACTIVEAURAS.RemoveLog", { effectDataLabel: effectLabel, tokenName: token.name }))
             }
