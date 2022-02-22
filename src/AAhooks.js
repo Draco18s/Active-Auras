@@ -23,7 +23,7 @@ Hooks.on("ready", () => {
 
 
     if (game.settings.get("ActiveAuras", "debug")) AAdebug = true
-
+	if (game.settings.get("ActiveAuras", "disable")) AAdisable = true
 })
 
 Hooks.on("createToken", (token) => {
@@ -72,6 +72,7 @@ Hooks.on("preDeleteToken", async (token) => {
  * On token movement run MainAura
  */
 Hooks.on("updateToken", async (token, update, _flags, _id) => {
+	console.log("Active Auras updating token...")
     if(canvas.scene === null) {if(AAdebug) {console.log("Active Auras disabled due to no canvas")} return}
     if (!AAgm) return;
     if (("y" in update || "x" in update || "elevation" in update)) {

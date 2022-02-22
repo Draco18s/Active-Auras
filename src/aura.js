@@ -3,6 +3,7 @@ const AA_MODULE_NAME = "ActiveAuras";
 let AAsocket;
 let AuraMap = new Map()
 let AAdebug = false
+let AAdisable = false
 class ActiveAuras {
 
     /**
