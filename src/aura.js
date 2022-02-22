@@ -306,10 +306,21 @@ class ActiveAuras {
 			try {
 				console.log(effectData);
 				let itemData = {
-					name: effectData.label,
+					name: "Aura Effect",
 					type: "buff",
 					active: true,
-					changes: effectData.data.changes,
+					changes: [
+						{
+							"_id": "rgzacjom",
+							"formula": "0",
+							"operator": "add",
+							"subTarget": "ac",
+							"modifier": "circumstance",
+							"priority": 0,
+							"value": 0,
+							"target": "ac"
+						}
+					],
 					img: effectData.img,
 					flags: effectData.flags,
 					id: effectData.id
