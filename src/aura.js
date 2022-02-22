@@ -304,7 +304,7 @@ class ActiveAuras {
 		if(game.system.id === "pf1") {
 			//await token.actor.update(effectData);
 			try {
-				await token.actor.createEmbeddedDocuments("Item", [tokenEffects.id]);
+				await token.actor.createEmbeddedDocuments("Item", [effectData]);
 			}
 			catch(e) {
 				console.log(e);
