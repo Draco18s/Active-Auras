@@ -297,7 +297,7 @@ class ActiveAuras {
         }
 		if(game.system.id === "pf1") {
 			//await token.actor.update(effectData);
-			await actor.createEmbeddedDocuments("Item", [effectData]);
+			await token.actor.createEmbeddedDocuments("Item", [effectData]);
 		}
 		else {
         	await token.actor.createEmbeddedDocuments("ActiveEffect", [effectData]);
@@ -317,7 +317,7 @@ class ActiveAuras {
             if (tokenEffects.data.label === effectLabel && tokenEffects.data.flags?.ActiveAuras?.applied === true) {
 				if(game.system.id === "pf1") {
 					//await token.actor.update(effectData);
-					await actor.deleteEmbeddedDocuments("Item", [tokenEffects.id]);
+					await token.actor.deleteEmbeddedDocuments("Item", [tokenEffects.id]);
 				}
 				else {
 	                await token.actor.deleteEmbeddedDocuments("ActiveEffect", [tokenEffects.id])
