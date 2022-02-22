@@ -168,20 +168,34 @@ class AAhelpers {
                     if (!EffectsArray.includes(testEffect.data.origin) && testEffect.data?.flags?.ActiveAuras?.applied) {
                         await removeToken.actor.deleteEmbeddedDocuments("ActiveEffect", [testEffect.id])
                         console.log(game.i18n.format("ACTIVEAURAS.RemoveLog", { effectDataLabel: testEffect.data.label, tokenName: removeToken.name }))
+						if(game.system.id == "pf1") {
+							for (let eff of testEffect.data._source.changes) {
+								if(eff.parent.id == testEffect.id) {
+									removeToken.actor.changes.delete(eff.id);
+								}
+							}
+						}
                     }
                 }
             }
         }
     }
+	
     static async RemoveAllAppliedAuras() {
         for (let removeToken of canvas.tokens.placeables) {
             if (removeToken?.actor?.effects.size > 0) {
                 let effects = removeToken.actor.effects.reduce((a, v) => { if (v.data?.flags?.ActiveAuras?.applied) return a.concat(v.id) }, [])
                 await removeToken.actor.deleteEmbeddedDocuments("ActiveEffect", effects)
                 console.log(game.i18n.format("ACTIVEAURAS.RemoveLog", { tokenName: removeToken.name }))
+				if(game.system.id == "pf1") {
+					for (let eff of testEffect.data._source.changes) {
+						if(eff.parent.id == testEffect.id) {
+							removeToken.actor.changes.delete(eff.id);
+						}
+					}
+				}
             }
         }
-
     }
 
     static UserCollateAuras(sceneID, checkAuras, removeAuras, source) {
@@ -203,14 +217,16 @@ class AAhelpers {
         }
 		if(game.system.id == "pf1") {
 			for (let eff of change.effect.data._source.changes) {
-				actor.changes.push(
-					game.pf1.documentComponents.ItemChange.create({
-						formula: eff.formula,
-						target: eff.target,
-						subTarget: eff.subTarget,
-						modifier: eff.modifier,
-						source: change.effect.data.label,
-					})
+				let change = game.pf1.documentComponents.ItemChange.create({
+					formula: eff.formula,
+					target: eff.target,
+					subTarget: eff.subTarget,
+					modifier: eff.modifier,
+					source: change.effect.data.label,
+				})
+				actor.changes.set(
+					change.id,
+					change
 				)
 			}
 		}
