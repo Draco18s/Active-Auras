@@ -215,7 +215,7 @@ class AAhelpers {
             args[1] = {}
             return wrapped(...args);
         }
-		if(game.system.id == "pf1") {
+		/*if(game.system.id == "pf1") {
 			for (let eff of change.effect.data._source.changes) {
 				let newchange = game.pf1.documentComponents.ItemChange.create({
 					formula: eff.formula,
@@ -224,12 +224,12 @@ class AAhelpers {
 					modifier: eff.modifier,
 					source: change.effect.data.label,
 				})
-				actor.changes.set(
+				actor?.changes?.set(
 					newchange.id,
 					newchange
 				)
 			}
-		}
+		}*/
         return wrapped(...args)
     }
 

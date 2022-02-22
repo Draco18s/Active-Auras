@@ -295,8 +295,12 @@ class ActiveAuras {
         if (effectData.flags.ActiveAuras.time !== "None" && effectData.flags.ActiveAuras.time !== undefined && game.modules.get("dae")?.active) {
             effectData.flags.dae?.specialDuration?.push(effectData.flags.ActiveAuras.time)
         }
-
-        await token.actor.createEmbeddedDocuments("ActiveEffect", [effectData]);
+		if(game.system.id === "pf1") {
+			await token.actor.update(effectData);
+		}
+		else {
+        	await token.actor.createEmbeddedDocuments("ActiveEffect", [effectData]);
+		}
         console.log(game.i18n.format("ACTIVEAURAS.ApplyLog", { effectDataLabel: effectData.label, tokenName: token.name }))
 		console.log(effectData);
     }
@@ -315,5 +319,4 @@ class ActiveAuras {
             }
         }
     }
-
 }
