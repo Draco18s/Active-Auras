@@ -296,7 +296,8 @@ class ActiveAuras {
             effectData.flags.dae?.specialDuration?.push(effectData.flags.ActiveAuras.time)
         }
 		if(game.system.id === "pf1") {
-			await token.actor.update(effectData);
+			//await token.actor.update(effectData);
+			await actor.createEmbeddedDocuments("Item", [effectData]);
 		}
 		else {
         	await token.actor.createEmbeddedDocuments("ActiveEffect", [effectData]);
@@ -314,7 +315,13 @@ class ActiveAuras {
         const token = canvas.tokens.get(tokenID)
         for (const tokenEffects of token.actor.effects) {
             if (tokenEffects.data.label === effectLabel && tokenEffects.data.flags?.ActiveAuras?.applied === true) {
-                await token.actor.deleteEmbeddedDocuments("ActiveEffect", [tokenEffects.id])
+				if(game.system.id === "pf1") {
+					//await token.actor.update(effectData);
+					await actor.deleteEmbeddedDocuments("Item", [tokenEffects.id]);
+				}
+				else {
+	                await token.actor.deleteEmbeddedDocuments("ActiveEffect", [tokenEffects.id])
+				}
                 console.log(game.i18n.format("ACTIVEAURAS.RemoveLog", { effectDataLabel: effectLabel, tokenName: token.name }))
             }
         }
