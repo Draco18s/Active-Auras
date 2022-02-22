@@ -180,7 +180,7 @@ class AAhelpers {
             }
         }
     }
-	
+
     static async RemoveAllAppliedAuras() {
         for (let removeToken of canvas.tokens.placeables) {
             if (removeToken?.actor?.effects.size > 0) {
@@ -217,7 +217,7 @@ class AAhelpers {
         }
 		if(game.system.id == "pf1") {
 			for (let eff of change.effect.data._source.changes) {
-				let change = game.pf1.documentComponents.ItemChange.create({
+				let newchange = game.pf1.documentComponents.ItemChange.create({
 					formula: eff.formula,
 					target: eff.target,
 					subTarget: eff.subTarget,
@@ -225,8 +225,8 @@ class AAhelpers {
 					source: change.effect.data.label,
 				})
 				actor.changes.set(
-					change.id,
-					change
+					newchange.id,
+					newchange
 				)
 			}
 		}
