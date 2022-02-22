@@ -309,22 +309,27 @@ class ActiveAuras {
 					name: "Aura Effect",
 					type: "buff",
 					active: true,
-					changes: [
-						{
-							"_id": "rgzacjom",
-							"formula": "0",
-							"operator": "add",
-							"subTarget": "ac",
-							"modifier": "circumstance",
-							"priority": 0,
-							"value": 0,
-							"target": "ac"
-						}
-					],
+					changes: new Collection(),
 					img: effectData.img,
 					flags: effectData.flags,
 					id: effectData.id
 				}
+				itemData.data.changes = new Collection();
+				let chdat = {
+					"_id": "rgzacjom",
+					"formula": "1",
+					"operator": "add",
+					"subTarget": "ac",
+					"modifier": "deflection",
+					"priority": 0,
+					"value": 0,
+					"target": "ac"
+				}
+				console.log("Before");
+				itemData.changes.set("rgzacjom", chdat)
+				console.log("Middle");
+				itemData.data.changes.set("rgzacjom", chdat)
+				console.log("After");
 				console.log(itemData);
 				await token.actor.createEmbeddedDocuments("Item", itemData );
 			}
