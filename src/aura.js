@@ -304,11 +304,12 @@ class ActiveAuras {
 		if(game.system.id === "pf1") {
 			//await token.actor.update(effectData);
 			try {
+				console.log(effectData);
 				let itemData = {
 					name: effectData.label,
 					type: "buff",
 					active: true,
-					changes: effectData.changes,
+					changes: effectData.data.changes,
 					img: effectData.img,
 					flags: effectData.flags,
 					id: effectData.id
