@@ -303,18 +303,16 @@ class ActiveAuras {
         }
 		if(game.system.id === "pf1") {
 			//await token.actor.update(effectData);
+			if(effectData.label == "") {
+				console.log("Missing effect label on " + effectData.name);
+				effectData.label = effectData.name;
+			}
+			if(effectData.label == "") {
+				console.log("Missing effect name on " + effectData.id);
+				effectData.label = effectData.name = effectData.id;
+			}
 			try {
 				console.log(effectData);
-				let itemData = {
-					name: "Aura Effect",
-					type: "buff",
-					active: true,
-					changes: new Collection(),
-					img: effectData.img,
-					flags: effectData.flags,
-					id: effectData.id
-				}
-				itemData.data.changes = new Collection();
 				let chdat = {
 					"_id": "rgzacjom",
 					"formula": "1",
@@ -325,13 +323,22 @@ class ActiveAuras {
 					"value": 0,
 					"target": "ac"
 				}
-				console.log("Before");
-				itemData.changes.set("rgzacjom", chdat)
-				console.log("Middle");
-				itemData.data.changes.set("rgzacjom", chdat)
-				console.log("After");
-				console.log(itemData);
-				await token.actor.createEmbeddedDocuments("Item", itemData );
+				let itemData = {
+					name: "Aura Effect",
+					type: "buff",
+					active: true,
+					changes: [chdat],
+					img: effectData.img,
+					flags: effectData.flags,
+					id: effectData.id
+				}
+				//itemData.data.changes = new Collection();
+				token.actor.createEmbeddedDocuments("Item", [itemData] ).then(res => {
+                    let itemBuff = res[0].toObject();
+					itemBuff.data.active = true;
+                    itemBuff.data.changes.push(chdat);
+                    token.actor.data.update({items: [itemBuff]})
+				})
 			}
 			catch(e) {
 				console.log(e);
