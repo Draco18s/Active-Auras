@@ -311,20 +311,14 @@ class ActiveAuras {
             effectData.flags.dae?.specialDuration?.push(effectData.flags.ActiveAuras.time)
         }
 		if(game.system.id === "pf1") {
-			if(effectData.label == "") {
-				console.log("Missing effect label on " + effectData.name);
-				effectData.label = effectData.name;
-			}
-			if(effectData.label == "") {
-				console.log("Missing effect name on " + effectData.id);
-				effectData.label = effectData.name = effectData.id;
-			}
 			try {
-				console.log(effectData);
+				let parts = effectData.origin.split('.');
+				var source = game.pf1.utils.getActorFromId(parts[1]).items.get(parts[3]);
+				console.log(source);
 				let itemData = {
-					name: effectData.name + " Effect",
+					name: effectData.label + " Effect",
 					type: "buff",
-					effectid: effectData.effectid,
+					//effectid: effectData.effectid,
 					data: {
 						active: true,
 						changes: [
