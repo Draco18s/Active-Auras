@@ -234,13 +234,23 @@ class ActiveAuras {
                     map.set(MapKey, { add: true, token: canvasToken, effect: auraEffect })
                 }
             }
-            else if (!MapObject?.add && canvasToken.document.actor?.effects.contents.some(e => e.data.label === auraEffect.data.label)) {
-                if (MapObject) {
-                    MapObject.add = false
-                }
-                else {
-                    map.set(MapKey, { add: false, token: canvasToken, effect: auraEffect })
-                }
+            else {
+				if(game.system.id === "pf1" && !MapObject?.add && canvasToken.document.actor?.items.contents.some(e => e.data.label === auraEffect.data.label)) {
+					if (MapObject) {
+						MapObject.add = false
+					}
+					else {
+						map.set(MapKey, { add: false, token: canvasToken, effect: auraEffect })
+					}
+				}
+				else if (!MapObject?.add && canvasToken.document.actor?.effects.contents.some(e => e.data.label === auraEffect.data.label)) {
+					if (MapObject) {
+						MapObject.add = false
+					}
+					else {
+						map.set(MapKey, { add: false, token: canvasToken, effect: auraEffect })
+					}
+				}
             }
         }
         return map
@@ -312,8 +322,9 @@ class ActiveAuras {
 			try {
 				console.log(effectData);
 				let itemData = {
-					name: effectData.label + " Effect",
+					name: effectData.name + " Effect",
 					type: "buff",
+					effectid: effectData.effectid,
 					data: {
 						active: true,
 						changes: [
@@ -355,7 +366,8 @@ class ActiveAuras {
 		const token = canvas.tokens.get(tokenID)
 		if(game.system.id === "pf1") {
 			for (const tokenEffects of token.actor.items) {
-				if(tokenEffects.data.data._id == effectData._id) {
+				console.log(tokenEffects);
+				if(tokenEffects.data.effectid == effectData.effectid) {
 					await token.actor.deleteEmbeddedDocuments("Item", [tokenEffects.id]);
 				}
 			}
