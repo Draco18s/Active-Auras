@@ -23,7 +23,6 @@ Hooks.on("ready", () => {
 
 
     if (game.settings.get("ActiveAuras", "debug")) AAdebug = true
-	if (game.settings.get("ActiveAuras", "disable")) AAdisable = true
 })
 
 Hooks.on("createToken", (token) => {

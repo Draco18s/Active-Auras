@@ -59,12 +59,4 @@ Hooks.on('init', () => {
         default: false,
         type: Boolean,
     });
-    game.settings.register("ActiveAuras", "disable", {
-        name: game.i18n.format("ACTIVEAURAS.disable_name"),
-        hint: game.i18n.format("ACTIVEAURAS.disable_hint"),
-        scope: "world",
-        config: true,
-        default: false,
-        type: Boolean,
-    });
 });

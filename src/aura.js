@@ -3,7 +3,6 @@ const AA_MODULE_NAME = "ActiveAuras";
 let AAsocket;
 let AuraMap = new Map()
 let AAdebug = false
-let AAdisable = false
 class ActiveAuras {
 
     /**
@@ -312,26 +311,13 @@ class ActiveAuras {
 			}
 			try {
 				let itemData = {
-					name: "Aura Effect",
+					name: effectData.name + " Effect",
 					type: "buff",
-					data: {
-						active: true,
-						changes: [
-							{
-							"_id": "rgzacjom",
-							"formula": "1",
-							"operator": "add",
-							"subTarget": "ac",
-							"modifier": "deflection",
-							"priority": 0,
-							"value": 0,
-							"target": "ac"
-							}
-						],
-					 },
+					data: effectData,
 					img: effectData.img,
 					flags: effectData.flags,
 					id: effectData.id,
+					origin: effectData.id,
 				}
 				await token.actor.createEmbeddedDocuments("Item", [itemData] );
 			}
@@ -340,8 +326,7 @@ class ActiveAuras {
 			}
 		}
 		else {
-			if(!AAdisable)
-        		await token.actor.createEmbeddedDocuments("ActiveEffect", [effectData]);
+			await token.actor.createEmbeddedDocuments("ActiveEffect", [effectData]);
 		}
         console.log(game.i18n.format("ACTIVEAURAS.ApplyLog", { effectDataLabel: effectData.label, tokenName: token.name }))
 		console.log(effectData);
@@ -352,26 +337,22 @@ class ActiveAuras {
      * @param {Token} token - token instance to remove effect from
      * @param {String} effectLabel - label of effect to remove
      */
-    static async RemoveActiveEffects(tokenID, effectLabel) {
-        const token = canvas.tokens.get(tokenID)
-        for (const tokenEffects of token.actor.effects) {
-            if (tokenEffects.data.label === effectLabel && tokenEffects.data.flags?.ActiveAuras?.applied === true) {
-				if(game.system.id === "pf1") {
-					if(!AAdisable) {
-						try {
-							await token.actor.deleteEmbeddedDocuments("Item", [tokenEffects.id]);
-						}
-						catch(e) {
-							console.log(e);
-						}
-					}
+	static async RemoveActiveEffects(tokenID, effectLabel) {
+		const token = canvas.tokens.get(tokenID)
+		if(game.system.id === "pf1") {
+			for (const tokenEffects of token.actor.items) {
+				if(tokenEffects.data.data._id == effectData._id) {
+					await token.actor.deleteEmbeddedDocuments("Item", [tokenEffects.id]);
 				}
-				else {
-					if(!AAdisable)
-	                	await token.actor.deleteEmbeddedDocuments("ActiveEffect", [tokenEffects.id])
+			}
+		}
+		else {
+			for (const tokenEffects of token.actor.effects) {
+				if (tokenEffects.data.label === effectLabel && tokenEffects.data.flags?.ActiveAuras?.applied === true) {
+						await token.actor.deleteEmbeddedDocuments("ActiveEffect", [tokenEffects.id])
+					console.log(game.i18n.format("ACTIVEAURAS.RemoveLog", { effectDataLabel: effectLabel, tokenName: token.name }))
 				}
-                console.log(game.i18n.format("ACTIVEAURAS.RemoveLog", { effectDataLabel: effectLabel, tokenName: token.name }))
-            }
-        }
+			}
+		}
     }
 }

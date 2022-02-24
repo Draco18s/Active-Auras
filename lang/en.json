@@ -45,7 +45,5 @@
     "ACTIVEAURAS.ApplyLog":"ActiveAuras | Applied '{effectDataLabel}' to {tokenName}",
     "ACTIVEAURAS.RemoveLog":"ActiveAuras | Removed '{effectDataLabel}' from {tokenName}",
     "ACTIVEAURAS.IgnoreSelfLog":"ActiveAuras | Ignoring '{effectDataLabel}' change {changeKey} to {actorName}",
-    "ACTIVEAURAS.SaveNotify": "${tokenName} passes the save against ${oldEffectDataLabel}",
-	"ACTIVEAURAS.disable_name":"Debug disable",
-	"ACTIVEAURAS.disable_hint":"Debug disable"
+    "ACTIVEAURAS.SaveNotify": "${tokenName} passes the save against ${oldEffectDataLabel}"
 }
