@@ -50,7 +50,7 @@ class ActiveAuras {
 				const MapKey = mapEffect[0]
 				map.set(MapKey, { add: mapEffect[1].add, token: mapEffect[1].token, effect: mapEffect[1].effect.data })
 			}
-			if (AAdebug) console.log(map)
+			//if (AAdebug) console.log(map)
 
 
 
@@ -86,7 +86,7 @@ class ActiveAuras {
 				}
 
 			}
-
+			if (AAdebug) console.log(map)
 			for (const update of map) {
 				if (update[1].add) {
 					await ActiveAuras.CreateActiveEffect(update[1].token.id, update[1].effect)
@@ -225,6 +225,7 @@ class ActiveAuras {
 
 			if (AAdebug) { console.log("distance? " + distance) }
 			if (AAdebug) { console.log("ActiveAuras !paused? " + (!auraEffect.data.flags?.ActiveAuras?.Paused)) }
+			if (AAdebug) { console.log(auraEffect) }
             if (distance && !auraEffect.data.flags?.ActiveAuras?.Paused) {
 				if (AAdebug) { console.log(MapObject) }
                 if (MapObject) {
@@ -312,9 +313,9 @@ class ActiveAuras {
         }
 		if(game.system.id === "pf1") {
 			try {
-				let parts = effectData.origin.split('.');
-				var source = game.pf1.utils.getActorFromId(parts[1]).items.get(parts[3]);
-				console.log(source);
+				//let parts = effectData.origin.split('.');
+				//var source = game.pf1.utils.getActorFromId(parts[1]).items.get(parts[3]);
+				//console.log(source);
 				let itemData = {
 					name: effectData.label + " Effect",
 					type: "buff",
@@ -333,6 +334,18 @@ class ActiveAuras {
 								"target": "ac"
 							}
 						],
+						flags: {
+							boolean: [],
+							dictionary: [
+								[
+									"effectid",
+									"ZtzyqpXXfDlbYQ3j"
+								]
+							]
+						},
+						dFlags: {
+							effectid: "ZtzyqpXXfDlbYQ3j"
+						},
 					 },
 					img: effectData.img,
 					flags: effectData.flags,
