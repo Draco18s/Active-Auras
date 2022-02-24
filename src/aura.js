@@ -310,14 +310,28 @@ class ActiveAuras {
 				effectData.label = effectData.name = effectData.id;
 			}
 			try {
+				console.log(effectData);
 				let itemData = {
-					name: effectData.name + " Effect",
+					name: effectData.label + " Effect",
 					type: "buff",
-					data: effectData,
+					data: {
+						active: true,
+						changes: [
+							{
+								"_id": "rgzacjom",
+								"formula": "1",
+								"operator": "add",
+								"subTarget": "ac",
+								"modifier": "deflection",
+								"priority": 0,
+								"value": 0,
+								"target": "ac"
+							}
+						],
+					 },
 					img: effectData.img,
 					flags: effectData.flags,
 					id: effectData.id,
-					origin: effectData.id,
 				}
 				await token.actor.createEmbeddedDocuments("Item", [itemData] );
 			}
