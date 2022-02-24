@@ -302,7 +302,6 @@ class ActiveAuras {
             effectData.flags.dae?.specialDuration?.push(effectData.flags.ActiveAuras.time)
         }
 		if(game.system.id === "pf1") {
-			//await token.actor.update(effectData);
 			if(effectData.label == "") {
 				console.log("Missing effect label on " + effectData.name);
 				effectData.label = effectData.name;
@@ -312,33 +311,29 @@ class ActiveAuras {
 				effectData.label = effectData.name = effectData.id;
 			}
 			try {
-				console.log(effectData);
-				let chdat = {
-					"_id": "rgzacjom",
-					"formula": "1",
-					"operator": "add",
-					"subTarget": "ac",
-					"modifier": "deflection",
-					"priority": 0,
-					"value": 0,
-					"target": "ac"
-				}
 				let itemData = {
 					name: "Aura Effect",
 					type: "buff",
-					active: true,
-					changes: [chdat],
+					data: {
+						active: true,
+						changes: [
+							{
+							"_id": "rgzacjom",
+							"formula": "1",
+							"operator": "add",
+							"subTarget": "ac",
+							"modifier": "deflection",
+							"priority": 0,
+							"value": 0,
+							"target": "ac"
+							}
+						],
+					 },
 					img: effectData.img,
 					flags: effectData.flags,
-					id: effectData.id
+					id: effectData.id,
 				}
-				//itemData.data.changes = new Collection();
-				token.actor.createEmbeddedDocuments("Item", [itemData] ).then(res => {
-                    let itemBuff = res[0].toObject();
-					itemBuff.data.active = true;
-                    itemBuff.data.changes.push(chdat);
-                    token.actor.data.update({items: [itemBuff]})
-				})
+				await token.actor.createEmbeddedDocuments("Item", [itemData] );
 			}
 			catch(e) {
 				console.log(e);
@@ -362,7 +357,6 @@ class ActiveAuras {
         for (const tokenEffects of token.actor.effects) {
             if (tokenEffects.data.label === effectLabel && tokenEffects.data.flags?.ActiveAuras?.applied === true) {
 				if(game.system.id === "pf1") {
-					//await token.actor.update(effectData);
 					if(!AAdisable) {
 						try {
 							await token.actor.deleteEmbeddedDocuments("Item", [tokenEffects.id]);
