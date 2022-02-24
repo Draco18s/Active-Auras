@@ -54,7 +54,6 @@ Hooks.on("updateCombat", async (combat, changed, options, userId) => {
     let combatant = canvas.tokens.get(combat.current.tokenId)
     let previousCombatant = canvas.tokens.get(combat.previous.tokenId)
     await previousCombatant.document.update({ "flags.ActiveAuras": false })
-    if (AAdebug) console.log("updateCombat, main aura")
     await ActiveAuras.MainAura(combatant.data, "combat update", combatant.scene.id)
 });
 
@@ -71,13 +70,11 @@ Hooks.on("preDeleteToken", async (token) => {
  * On token movement run MainAura
  */
 Hooks.on("updateToken", async (token, update, _flags, _id) => {
-	console.log("Active Auras updating token...")
     if(canvas.scene === null) {if(AAdebug) {console.log("Active Auras disabled due to no canvas")} return}
     if (!AAgm) return;
     if (("y" in update || "x" in update || "elevation" in update)) {
         let MapObject = AuraMap.get(token.parent.id);
         if (!MapObject || MapObject?.effects.length < 1) return;
-        if (AAdebug) console.log("movement, main aura")
         await ActiveAuras.MainAura(token, "movement update", token.parent.id)
     }
     else if ("hidden" in update && AAhelpers.IsAuraToken(token, token.parent.id)) {

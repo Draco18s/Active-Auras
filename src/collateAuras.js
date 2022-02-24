@@ -1,7 +1,8 @@
 async function CollateAuras(sceneID, checkAuras, removeAuras, source) {
     if (!AAgm) return;
     if (sceneID !== canvas.id) return ui.notifications.warn("Collate Auras called on a non viewed scene, auras will be updated when you return to that scene")
-    if (AAdebug) console.log(source)
+    if (AAdebug) console.log("CollateAuras")
+	if (AAdebug) console.log(source)
     let MapKey = sceneID;
     let MapObject = AuraMap.get(MapKey);
     let effectArray = [];
@@ -16,10 +17,17 @@ async function CollateAuras(sceneID, checkAuras, removeAuras, source) {
             if (AAdebug) console.log(`Skipping ${testToken.name}, 0hp`)
             continue
         }
+		console.log(testToken);
         for (let testEffect of testToken?.actor?.effects.contents) {
             if (testEffect.data.flags?.ActiveAuras?.isAura) {
                 if (testEffect.data.disabled) continue;
-                let newEffect = { data: duplicate(testEffect.data), parentActorLink: testEffect.parent.data.token.actorLink, parentActorId: testEffect.parent.id, entityType: "token", entityId: testToken.id }
+                let newEffect = { 
+					data: duplicate(testEffect.data),
+					parentActorLink: testEffect.parent.data.token.actorLink,
+					parentActorId: testEffect.parent.id,
+					entityType: "token",
+					entityId: testToken.id
+				}
                 let re = /@[\w\.]+/g
                 let rollData = testToken.actor.getRollData()
 
@@ -45,6 +53,7 @@ async function CollateAuras(sceneID, checkAuras, removeAuras, source) {
                 newEffect.data.flags.ActiveAuras.ignoreSelf = false;
                 if (testEffect.data.flags.ActiveAuras?.hidden && testToken.data.hidden) newEffect.data.flags.ActiveAuras.Paused = true;
                 else newEffect.data.flags.ActiveAuras.Paused = false;
+				console.log(newEffect);
                 effectArray.push(newEffect)
             }
         }

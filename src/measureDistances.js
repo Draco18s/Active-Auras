@@ -105,7 +105,6 @@ class AAmeasure {
             let check = canvas.foreground.addChild(g)
             check.boundingCheck = true
         }
-		if (AAdebug) console.log(xMin + " < " + t1.data.x + " < " + xMax)
         return !(t1.data.x < xMin || t1.data.x > xMax || t1.data.y > yMax || t1.data.y < yMin);
     }
 

@@ -164,7 +164,6 @@ class ActiveAuras {
             let hostileTurn = auraEffect.data.flags?.ActiveAuras?.hostile
             */
             const auraEntityType = auraEffect.entityType
-			if (AAdebug) { console.log(auraEntityType) }
             switch (auraEntityType) {
                 //{data: testEffect.data, parentActorLink :testEffect.parent.data.token.actorLink, parentActorId : testEffect.parent._id, tokenId: testToken.id, templateId: template._id, }
                 case "token": {
@@ -223,8 +222,6 @@ class ActiveAuras {
             const MapKey = auraEffect.data.label + "-" + canvasToken.id + "-" + auraEntity.id;
             MapObject = map.get(MapKey);
 
-			if (AAdebug) { console.log("distance? " + distance) }
-			if (AAdebug) { console.log("ActiveAuras !paused? " + (!auraEffect.data.flags?.ActiveAuras?.Paused)) }
 			if (AAdebug) { console.log(auraEffect) }
             if (distance && !auraEffect.data.flags?.ActiveAuras?.Paused) {
 				if (AAdebug) { console.log(MapObject) }
@@ -313,9 +310,6 @@ class ActiveAuras {
         }
 		if(game.system.id === "pf1") {
 			try {
-				//let parts = effectData.origin.split('.');
-				//var source = game.pf1.utils.getActorFromId(parts[1]).items.get(parts[3]);
-				//console.log(source);
 				let itemData = {
 					name: effectData.label + " Effect",
 					type: "buff",
