@@ -15,7 +15,6 @@ async function CollateAuras(sceneID, checkAuras, removeAuras, source) {
             if (AAdebug) console.log(`Skipping ${testToken.name}, 0hp`)
             continue
         }
-		console.log(testToken);
         for (let testEffect of testToken?.actor?.effects.contents) {
             if (testEffect.data.flags?.ActiveAuras?.isAura) {
                 if (testEffect.data.disabled) continue;
@@ -45,16 +44,14 @@ async function CollateAuras(sceneID, checkAuras, removeAuras, source) {
                 }
                 newEffect.data.disabled = false
                 let macro = newEffect.data.flags.ActiveAuras.isMacro !== undefined ? newEffect.data.flags.ActiveAuras.isMacro : false;
-				console.log(testEffect.data)
-                newEffect.data.img = testEffect.data.img;
+				newEffect.data.img = testEffect.data.img;
 				newEffect.data.flags.ActiveAuras.isAura = false;
                 newEffect.data.flags.ActiveAuras.applied = true;
                 newEffect.data.flags.ActiveAuras.isMacro = macro;
                 newEffect.data.flags.ActiveAuras.ignoreSelf = false;
                 if (testEffect.data.flags.ActiveAuras?.hidden && testToken.data.hidden) newEffect.data.flags.ActiveAuras.Paused = true;
                 else newEffect.data.flags.ActiveAuras.Paused = false;
-				console.log(newEffect);
-                effectArray.push(newEffect)
+				effectArray.push(newEffect)
             }
         }
     }
@@ -82,10 +79,8 @@ function RetrieveTemplateAuras(effectArray) {
     let auraTemplates = canvas.templates.placeables.filter(i => i.data.flags?.ActiveAuras?.IsAura !== undefined)
 
     for (let template of auraTemplates) {
-		console.log(template);
         for (let testEffect of template.data.flags?.ActiveAuras?.IsAura) {
             if (testEffect.disabled) continue;
-			console.log(testEffect);
             let newEffect = duplicate(testEffect)
             const parts = testEffect.data.origin.split(".")
             const [entityName, entityId, embeddedName, embeddedId] = parts;
@@ -108,7 +103,6 @@ function RetrieveTemplateAuras(effectArray) {
             newEffect.data.flags.ActiveAuras.applied = true;
             newEffect.data.flags.ActiveAuras.isMacro = macro;
             newEffect.data.flags.ActiveAuras.ignoreSelf = false;
-			console.log(newEffect);
             effectArray.push(newEffect)
         }
     }
