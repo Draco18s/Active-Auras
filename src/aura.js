@@ -91,6 +91,7 @@ class ActiveAuras {
 					await ActiveAuras.CreateActiveEffect(update[1].token.id, update[1].effect)
 				}
 				else {
+					console.log("this instead? " + update[1].effect.data.flags?.ActiveAuras?.effectid)
 					await ActiveAuras.RemoveActiveEffects(update[1].token.id, update[1].effect.label)
 				}
 			}
@@ -341,11 +342,12 @@ class ActiveAuras {
      * @param {String} effectLabel - label of effect to remove
      */
 	static async RemoveActiveEffects(tokenID, effectLabel) {
+		if (AAdebug) console.log("effectLabel to remove: " + effectLabel);
 		const token = canvas.tokens.get(tokenID)
 		if(game.system.id === "pf1") {
 			for (const tokenEffects of token.actor.items) {
 				if (AAdebug) console.log(tokenEffects);
-				if(tokenEffects.data.effectid == effectData.effectid) {
+				if(tokenEffects.data.effectid == effectLabel) {
 					await token.actor.deleteEmbeddedDocuments("Item", [tokenEffects.id]);
 				}
 			}
