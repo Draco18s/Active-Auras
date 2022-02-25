@@ -349,7 +349,7 @@ class ActiveAuras {
 			for (const tokenEffects of token.actor.items) {
 				if (AAdebug) console.log(tokenEffects);
 				if (AAdebug) console.log(effect);
-				if(tokenEffects.data.effectid == effect.data.flags.ActiveAuras.effectid) {
+				if(tokenEffects.data.flags?.ActiveAuras?.effectid == effect.flags.ActiveAuras.effectid) {
 					await token.actor.deleteEmbeddedDocuments("Item", [tokenEffects.id]);
 				}
 			}
