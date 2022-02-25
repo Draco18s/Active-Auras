@@ -90,7 +90,10 @@ function RetrieveTemplateAuras(effectArray) {
             Object.assign(rollData, { item: { level: testEffect.castLevel } })
             let re = /@[\w\.]+/g
             for (let change of newEffect.data.changes) {
-                if (typeof change.value !== "string") continue
+                if (typeof change.value !== "string") {
+					console.log("Skipping " + testEffect.label + " because value was not a string");
+					continue
+				}
                 let s = change.value
                 for (let match of s.match(re) || []) s = s.replace(match, getProperty(rollData, match.slice(1)))
                 change.value = s
