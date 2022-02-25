@@ -144,7 +144,10 @@ class ActiveAuras {
         if (tokenId && canvasToken.id !== tokenId) {
             checkEffects = checkEffects.filter(i => i.entityId === tokenId)
             let duplicateEffect = []
-            checkEffects.forEach(e => duplicateEffect = (MapObject.effects.filter(i => (i.data?.label === e.data?.label) && i.entityId !== tokenId)));
+            checkEffects.forEach(e => duplicateEffect = (MapObject.effects.filter(
+				i => (i.data?.label === e.data?.label || i.data.flags?.ActiveAuras?.effectid === e.data.flags?.ActiveAuras?.effectid)
+				&& i.entityId !== tokenId
+			)));
             checkEffects = checkEffects.concat(duplicateEffect)
         }
         for (const auraEffect of checkEffects) {
@@ -263,7 +266,10 @@ class ActiveAuras {
     static async CreateActiveEffect(tokenID, oldEffectData) {
         const token = canvas.tokens.get(tokenID)
 
-        const duplicateEffect = token.document.actor.effects.contents.find(e => e.data.label === oldEffectData.label)
+        const duplicateEffect = token.document.actor.effects.contents.find(
+			e => e.data.label === oldEffectData.label || 
+			e.data.flags?.ActiveAuras?.effectid === oldEffectData.flags?.ActiveAuras?.effectid
+		)
         if (getProperty(duplicateEffect, "data.flags.ActiveAuras.isAura")) return;
         if (duplicateEffect) {
             if (duplicateEffect.data.origin === oldEffectData.origin) return;
@@ -312,7 +318,7 @@ class ActiveAuras {
 		if(game.system.id === "pf1") {
 			try {
 				let itemData = {
-					name: effectData.label + " Effect",
+					name: effectData.label,
 					type: "buff",
 					data: {
 						effectid: effectData.flags.ActiveAuras.effectid,
@@ -323,6 +329,15 @@ class ActiveAuras {
 					flags: effectData.flags,
 					id: effectData.id,
 				}
+				let [sourceOwnerType, sourceOwnerID, sourceType, sourceID] = oldEffectData.origin.split('.');
+				let sourceActor = game.pf1.utils.getActorFromId(sourceOwnerID);
+				itemData.data.changes.forEach(
+					c => {
+						let v = Roll.replaceFormulaData(c.formula, sourceActor?.getRollData(), { missing: '0', warn: true });
+						c.formula = v.toString();
+						c.value = v
+					}
+				);
 				console.log(itemData);
 				await token.actor.createEmbeddedDocuments("Item", [itemData] );
 			}
