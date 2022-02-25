@@ -109,6 +109,7 @@ Hooks.on("updateActiveEffect", (effect, _update) => {
 Hooks.on("deleteActiveEffect", (effect) => {
     if(canvas.scene === null) {if(AAdebug) {console.log("Active Auras disabled due to no canvas")} return}
     if (!AAgm) return;
+	console.log("Active Auras deleteActiveEffect hook");
     let applyStatus = effect.data.flags?.ActiveAuras?.applied;
     let auraStatus = effect.data.flags?.ActiveAuras?.isAura;
     if (!applyStatus && auraStatus) {
