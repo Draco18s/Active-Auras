@@ -166,9 +166,9 @@ class AAhelpers {
             if (removeToken?.actor?.effects.size > 0) {
                 for (let testEffect of removeToken.actor.effects) {
 					if(game.system.id == "pf1" && !EffectsArray.includes(testEffect.data.origin) && testEffect.data.origin != undefined) {
-						let itemSource = ResolveSource(testEffect.data.origin)
+						let itemSource = AAhelpers.ResolveSource(testEffect.data.origin)
 						let effectId = itemSource?.data?.flags?.ActiveAuras?.effectid;
-						if(effectId && !EffectsArray.some(x => ResolveSource(x).data.effects.has(effectId))) {
+						if(effectId && !EffectsArray.some(x => AAhelpers.ResolveSource(x).data.effects.has(effectId))) {
 							actorSource.deleteEmbeddedDocuments("Item", itemSource.id);
 						}
 					}
