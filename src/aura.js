@@ -91,7 +91,7 @@ class ActiveAuras {
 					await ActiveAuras.CreateActiveEffect(update[1].token.id, update[1].effect)
 				}
 				else {
-					console.log("this instead? " + update[1].effect.data.flags?.ActiveAuras?.effectid)
+					console.log("this instead? " + update[1].effect)
 					await ActiveAuras.RemoveActiveEffects(update[1].token.id, update[1].effect.label)
 				}
 			}
