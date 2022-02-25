@@ -1,8 +1,6 @@
 async function CollateAuras(sceneID, checkAuras, removeAuras, source) {
     if (!AAgm) return;
     if (sceneID !== canvas.id) return ui.notifications.warn("Collate Auras called on a non viewed scene, auras will be updated when you return to that scene")
-    if (AAdebug) console.log("CollateAuras")
-	if (AAdebug) console.log(source)
     let MapKey = sceneID;
     let MapObject = AuraMap.get(MapKey);
     let effectArray = [];
@@ -47,7 +45,9 @@ async function CollateAuras(sceneID, checkAuras, removeAuras, source) {
                 }
                 newEffect.data.disabled = false
                 let macro = newEffect.data.flags.ActiveAuras.isMacro !== undefined ? newEffect.data.flags.ActiveAuras.isMacro : false;
-                newEffect.data.flags.ActiveAuras.isAura = false;
+				console.log(testEffect.data)
+                newEffect.data.img = testEffect.data.img;
+				newEffect.data.flags.ActiveAuras.isAura = false;
                 newEffect.data.flags.ActiveAuras.applied = true;
                 newEffect.data.flags.ActiveAuras.isMacro = macro;
                 newEffect.data.flags.ActiveAuras.ignoreSelf = false;

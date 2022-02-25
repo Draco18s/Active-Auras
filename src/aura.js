@@ -232,7 +232,7 @@ class ActiveAuras {
                 }
             }
             else {
-				if(game.system.id === "pf1" && !MapObject?.add && canvasToken.document.actor?.items.contents.some(e => e.data.label === auraEffect.data.label)) {
+				if(game.system.id === "pf1" && !MapObject?.add && canvasToken.document.actor?.items.contents.some(e => e.data.flags.ActiveAuras.effectid === auraEffect.data.flags.ActiveAuras.effectid)) {
 					if (MapObject) {
 						MapObject.add = false
 					}
@@ -312,34 +312,11 @@ class ActiveAuras {
 				let itemData = {
 					name: effectData.label + " Effect",
 					type: "buff",
-					//effectid: effectData.effectid,
 					data: {
+						effectid: effectData.flags.ActiveAuras.effectid,
 						active: true,
-						changes: [
-							{
-								"_id": "rgzacjom",
-								"formula": "1",
-								"operator": "add",
-								"subTarget": "ac",
-								"modifier": "deflection",
-								"priority": 0,
-								"value": 0,
-								"target": "ac"
-							}
-						],
-						flags: {
-							boolean: [],
-							dictionary: [
-								[
-									"effectid",
-									"ZtzyqpXXfDlbYQ3j"
-								]
-							]
-						},
-						dFlags: {
-							effectid: "ZtzyqpXXfDlbYQ3j"
-						},
-					 },
+						changes: duplicate(effectData.data.changes)
+					},
 					img: effectData.img,
 					flags: effectData.flags,
 					id: effectData.id,
