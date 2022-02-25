@@ -165,28 +165,33 @@ class AAhelpers {
         for (let removeToken of canvas.tokens.placeables) {
             if (removeToken?.actor?.effects.size > 0) {
                 for (let testEffect of removeToken.actor.effects) {
-                    if (!EffectsArray.includes(testEffect.data.origin) && testEffect.data?.flags?.ActiveAuras?.applied) {
+					if(game.system.id == "pf1" && !EffectsArray.includes(testEffect.data.origin) && testEffect.data.origin != undefined) {
+						let itemSource = ResolveSource(testEffect.data.origin)
+						let effectId = itemSource?.data?.flags?.ActiveAuras?.effectid;
+						if(effectId && !EffectsArray.some(x => ResolveSource(x).data.effects.has(effectId))) {
+							actorSource.deleteEmbeddedDocuments("Item", itemSource.id);
+						}
+					}
+                    else if (!EffectsArray.includes(testEffect.data.origin) && testEffect.data?.flags?.ActiveAuras?.applied) {
                         await removeToken.actor.deleteEmbeddedDocuments("ActiveEffect", [testEffect.id])
                         console.log(game.i18n.format("ACTIVEAURAS.RemoveLog", { effectDataLabel: testEffect.data.label, tokenName: removeToken.name }))
-						if(game.system.id == "pf1") {
-							for (let eff of testEffect.data._source.changes) {
-								if(eff.parent.id == testEffect.id) {
-									removeToken.actor.changes.delete(eff.id);
-								}
-							}
-						}
                     }
                 }
             }
         }
     }
 
+	static ResolveSource(origin) {
+		let[sourceOwnerType, sourceOwnerID, sourceType, sourceID] = origin.split('.')
+		if(sourceOwnerType != "Actor") return null;
+		let actorSource = game.pf1.utils.getActorFromId(sourceOwnerID)
+		if(actorSource == null) return null;
+		return actorSource.data.items.get(sourceID)
+	}
+
     static async RemoveAllAppliedAuras() {
         for (let removeToken of canvas.tokens.placeables) {
             if (removeToken?.actor?.effects.size > 0) {
-                let effects = removeToken.actor.effects.reduce((a, v) => { if (v.data?.flags?.ActiveAuras?.applied) return a.concat(v.id) }, [])
-                await removeToken.actor.deleteEmbeddedDocuments("ActiveEffect", effects)
-                console.log(game.i18n.format("ACTIVEAURAS.RemoveLog", { tokenName: removeToken.name }))
 				if(game.system.id == "pf1") {
 					for (let eff of testEffect.data._source.changes) {
 						if(eff.parent.id == testEffect.id) {
@@ -194,6 +199,11 @@ class AAhelpers {
 						}
 					}
 				}
+				else {
+					let effects = removeToken.actor.effects.reduce((a, v) => { if (v.data?.flags?.ActiveAuras?.applied) return a.concat(v.id) }, [])
+                	await removeToken.actor.deleteEmbeddedDocuments("ActiveEffect", effects)
+                }
+                console.log(game.i18n.format("ACTIVEAURAS.RemoveLog", { tokenName: removeToken.name }))
             }
         }
     }
