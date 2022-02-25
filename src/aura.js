@@ -91,8 +91,9 @@ class ActiveAuras {
 					await ActiveAuras.CreateActiveEffect(update[1].token.id, update[1].effect)
 				}
 				else {
-					console.log("this instead? " + update[1].effect)
-					await ActiveAuras.RemoveActiveEffects(update[1].token.id, update[1].effect.label)
+					console.log("this instead? ")
+					console.log(update[1].effect)
+					await ActiveAuras.RemoveActiveEffects(update[1].token.id, update[1].effect)
 				}
 			}
 			if (AAdebug) {
@@ -267,7 +268,7 @@ class ActiveAuras {
         if (duplicateEffect) {
             if (duplicateEffect.data.origin === oldEffectData.origin) return;
             if (JSON.stringify(duplicateEffect.data.changes) === JSON.stringify(oldEffectData.changes)) return;
-            else await ActiveAuras.RemoveActiveEffects(tokenID, oldEffectData.label)
+            else await ActiveAuras.RemoveActiveEffects(tokenID, oldEffectData)
         }
         let effectData = duplicate(oldEffectData)
         if (effectData.flags.ActiveAuras.onlyOnce) {
@@ -341,22 +342,23 @@ class ActiveAuras {
      * @param {Token} token - token instance to remove effect from
      * @param {String} effectLabel - label of effect to remove
      */
-	static async RemoveActiveEffects(tokenID, effectLabel) {
-		if (AAdebug) console.log("effectLabel to remove: " + effectLabel);
+	static async RemoveActiveEffects(tokenID, effect) {
+		if (AAdebug) console.log("effectLabel to remove: " + effect.label);
 		const token = canvas.tokens.get(tokenID)
 		if(game.system.id === "pf1") {
 			for (const tokenEffects of token.actor.items) {
 				if (AAdebug) console.log(tokenEffects);
-				if(tokenEffects.data.effectid == effectLabel) {
+				if (AAdebug) console.log(effect);
+				if(tokenEffects.data.effectid == effect.data.flags.ActiveAuras.effectid) {
 					await token.actor.deleteEmbeddedDocuments("Item", [tokenEffects.id]);
 				}
 			}
 		}
 		else {
 			for (const tokenEffects of token.actor.effects) {
-				if (tokenEffects.data.label === effectLabel && tokenEffects.data.flags?.ActiveAuras?.applied === true) {
+				if (tokenEffects.data.label === effect.label && tokenEffects.data.flags?.ActiveAuras?.applied === true) {
 					await token.actor.deleteEmbeddedDocuments("ActiveEffect", [tokenEffects.id])
-					if (AAdebug) console.log(game.i18n.format("ACTIVEAURAS.RemoveLog", { effectDataLabel: effectLabel, tokenName: token.name }))
+					if (AAdebug) console.log(game.i18n.format("ACTIVEAURAS.RemoveLog", { effectDataLabel: effect.label, tokenName: token.name }))
 				}
 			}
 		}
