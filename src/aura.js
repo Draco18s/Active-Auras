@@ -16,7 +16,6 @@ class ActiveAuras {
 		try {
 			if (AAdebug) { perfStart = performance.now() }
 			if (typeof movedToken?.documentName !== "string") movedToken = movedToken?.document ?? undefined
-			if (AAdebug) { console.log(source) }
 			if (!AAgm) return;
 			const sceneCombat = game.combats.filter(c => c.scene?.id === sceneID)
 			if (game.settings.get("ActiveAuras", "combatOnly") && !sceneCombat[0]?.started) {
@@ -151,7 +150,7 @@ class ActiveAuras {
 
             const { radius, height, hostile, wildcard, extra } = auraEffect.data.flags?.ActiveAuras;
 			if (AAdebug) { console.log(auraEffect.data.flags?.ActiveAuras) }
-            let { type, alignment } = auraEffect.data.flags?.ActiveAuras;
+            let { type, alignment } = auraEffect;
             const { parentActorLink, parentActorId } = auraEffect
             type = type !== undefined ? type.toLowerCase() : "";
             alignment = alignment !== undefined ? alignment.toLowerCase() : "";
@@ -345,6 +344,7 @@ class ActiveAuras {
 					flags: effectData.flags,
 					id: effectData.id,
 				}
+				console.log(itemData);
 				await token.actor.createEmbeddedDocuments("Item", [itemData] );
 			}
 			catch(e) {

@@ -82,8 +82,10 @@ function RetrieveTemplateAuras(effectArray) {
     let auraTemplates = canvas.templates.placeables.filter(i => i.data.flags?.ActiveAuras?.IsAura !== undefined)
 
     for (let template of auraTemplates) {
+		console.log(template);
         for (let testEffect of template.data.flags?.ActiveAuras?.IsAura) {
             if (testEffect.disabled) continue;
+			console.log(testEffect);
             let newEffect = duplicate(testEffect)
             const parts = testEffect.data.origin.split(".")
             const [entityName, entityId, embeddedName, embeddedId] = parts;
@@ -106,6 +108,7 @@ function RetrieveTemplateAuras(effectArray) {
             newEffect.data.flags.ActiveAuras.applied = true;
             newEffect.data.flags.ActiveAuras.isMacro = macro;
             newEffect.data.flags.ActiveAuras.ignoreSelf = false;
+			console.log(newEffect);
             effectArray.push(newEffect)
         }
     }
