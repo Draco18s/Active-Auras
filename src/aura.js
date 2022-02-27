@@ -264,16 +264,15 @@ class ActiveAuras {
     static async CreateActiveEffect(tokenID, oldEffectData) {
         const token = canvas.tokens.get(tokenID)
 
-        const duplicateEffect = token.document.actor.effects.contents.find(
-			e => e.data.label === oldEffectData.label || 
-			e.data.flags?.ActiveAuras?.effectid === oldEffectData.flags?.ActiveAuras?.effectid
-		)
+        const duplicateEffect = token.document.actor.effects.contents.find(e => e.data.label === oldEffectData.label)
+		if(token.document.actor.data.items.some(x => x.data.flags?.ActiveAuras?.effectid == oldEffectData.flags?.ActiveAuras?.effectid)) return
         if (getProperty(duplicateEffect, "data.flags.ActiveAuras.isAura")) return;
         if (duplicateEffect) {
             if (duplicateEffect.data.origin === oldEffectData.origin) return;
             if (JSON.stringify(duplicateEffect.data.changes) === JSON.stringify(oldEffectData.changes)) return;
             else await ActiveAuras.RemoveActiveEffects(tokenID, oldEffectData)
         }
+		//inik.data.items.some(x => x.data.flags?.ActiveAuras?.effectid == "ZtzyqpXXfDlbYQ3j")
         let effectData = duplicate(oldEffectData)
         if (effectData.flags.ActiveAuras.onlyOnce) {
             const AAID = oldEffectData.origin.replaceAll(".", "")

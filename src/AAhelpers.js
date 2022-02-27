@@ -292,19 +292,20 @@ class AAhelpers {
 		}
 		tabs.append('<a class="item" data-tab="effects">Effects</a>')
 		let html = renderTemplate(ActiveAuras.TEMPLATES.EFFECTS, { effects:effect?.data?.flags?.ActiveAuras?.changes });
-
-		html.on('click', '.add-change', (event) => {
+		let domObj = section.append(html)
+		console.log(html)
+		console.log(domObj)
+		domObj.on('click', '.add-change', (event) => {
 			console.log("add change click")
 		});
-		html.on('click', '.delete-change', (event) => {
+		domObj.on('click', '.delete-change', (event) => {
 			console.log("delete change click")
 		});
-		html.on('blur', 'input', (event) => {
+		domObj.on('blur', 'input', (event) => {
 			console.log("blur click")
 		});
-		html.on('change', 'select', (event) => {
+		domObj.on('change', 'select', (event) => {
 			console.log("select change click")
 		});
-		section.append(html)
 	}
 }
