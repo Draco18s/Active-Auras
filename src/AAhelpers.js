@@ -287,7 +287,7 @@ class AAhelpers {
 		let effect = null
 		for(let ef of pfItem.data.effects) {
 			if(!ef.data.flags?.ActiveAuras?.isAura) continue;
-			if(effect == null) effect = eff;
+			if(effect == null) effect = ef;
 			break;
 		}
 		tabs.append('<a class="item" data-tab="effects">Effects</a>')
