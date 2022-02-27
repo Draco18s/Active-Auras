@@ -91,7 +91,6 @@ function RetrieveTemplateAuras(effectArray) {
             let re = /@[\w\.]+/g
             for (let change of newEffect.data.changes) {
                 if (typeof change.value !== "string") {
-					console.log("Skipping " + testEffect.label + " because value was not a string");
 					continue
 				}
                 let s = change.value

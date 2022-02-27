@@ -91,8 +91,6 @@ class ActiveAuras {
 					await ActiveAuras.CreateActiveEffect(update[1].token.id, update[1].effect)
 				}
 				else {
-					console.log("this instead? ")
-					console.log(update[1].effect)
 					await ActiveAuras.RemoveActiveEffects(update[1].token.id, update[1].effect)
 				}
 			}
@@ -316,35 +314,28 @@ class ActiveAuras {
             effectData.flags.dae?.specialDuration?.push(effectData.flags.ActiveAuras.time)
         }
 		if(game.system.id === "pf1") {
-			try {
-				let itemData = {
-					name: effectData.label,
-					type: "buff",
-					data: {
-						effectid: effectData.flags.ActiveAuras.effectid,
-						active: true,
-						changes: duplicate(effectData.flags.ActiveAuras.changes)
-					},
-					img: effectData.img,
-					flags: effectData.flags,
-					id: effectData.id,
+			let itemData = {
+				name: effectData.label,
+				type: "buff",
+				data: {
+					effectid: effectData.flags.ActiveAuras.effectid,
+					active: true,
+					changes: duplicate(effectData.flags.ActiveAuras.changes)
+				},
+				img: effectData.img,
+				flags: effectData.flags,
+				id: effectData.id,
+			}
+			let [sourceOwnerType, sourceOwnerID, sourceType, sourceID] = oldEffectData.origin.split('.');
+			let sourceActor = game.pf1.utils.getActorFromId(sourceOwnerID);
+			itemData.data.changes.forEach(
+				c => {
+					let v = Roll.replaceFormulaData(c.formula, sourceActor?.getRollData(), { missing: '0', warn: true });
+					c.formula = v.toString();
+					c.value = v
 				}
-				let [sourceOwnerType, sourceOwnerID, sourceType, sourceID] = oldEffectData.origin.split('.');
-				let sourceActor = game.pf1.utils.getActorFromId(sourceOwnerID);
-				itemData.data.changes.forEach(
-					c => {
-						let v = Roll.replaceFormulaData(c.formula, sourceActor?.getRollData(), { missing: '0', warn: true });
-						c.formula = v.toString();
-						c.value = v
-					}
-				);
-				console.log(itemData);
-				await token.actor.createEmbeddedDocuments("Item", [itemData] );
-			}
-			catch(e) {
-				console.log(e);
-				console.log(itemData);
-			}
+			);
+			await token.actor.createEmbeddedDocuments("Item", [itemData] );
 		}
 		else {
 			await token.actor.createEmbeddedDocuments("ActiveEffect", [effectData]);
@@ -358,12 +349,9 @@ class ActiveAuras {
      * @param {String} effectLabel - label of effect to remove
      */
 	static async RemoveActiveEffects(tokenID, effect) {
-		if (AAdebug) console.log("effectLabel to remove: " + effect.label);
 		const token = canvas.tokens.get(tokenID)
 		if(game.system.id === "pf1") {
 			for (const tokenEffects of token.actor.items) {
-				if (AAdebug) console.log(tokenEffects);
-				if (AAdebug) console.log(effect);
 				if(tokenEffects.data.flags?.ActiveAuras?.effectid == effect.flags.ActiveAuras.effectid) {
 					await token.actor.deleteEmbeddedDocuments("Item", [tokenEffects.id]);
 				}
@@ -380,6 +368,6 @@ class ActiveAuras {
     }
 
 	static TEMPLATES = {
-		EFFECTS: `modules/${this.ID}/templates/effects.hbs`
+		EFFECTS: "modules/ActiveAuras/templates/effects.hbs"
 	}
 }
