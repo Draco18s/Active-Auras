@@ -1,0 +1,71 @@
+{{log 'effects-template' this}}
+<form>
+  <li class="items-header change-header flexrow">
+    <h3 class="item-name flexrow">Changes <a class="help-browser" data-url="systems/pf1/help/items/concepts/changes.hbs"><i class="far fa-question-circle"></i></a></h3>
+    <div class="item-operator flexrow">Operator</div>
+    <div class="item-target flexrow">Target</div>
+    <div class="item-modifier flexrow">Modifier</div>
+    <div class="item-priority flexrow" title="Priority"><i class="fas fa-sort"></i></div>
+
+    <div class="item-controls basic flexrow">
+      <a class="item-control item-create change-control add-change">
+        <i class="fas fa-plus"></i>
+      </a>
+    </div>
+  </li>
+
+  <ol class="items-list changes">
+	{{#each effects}}
+		<li class="item change flexrow" data-change="52we25yq">
+			<div class="item-name item-formula flexrow">
+				<input class="change-formula formula" type="text" name="data.changes.{{@index}}.formula" value="" placeholder="Formula" required="">
+			</div>
+
+			<div class="item-operator flexrow">
+				<select class="change-operator" name="data.changes.{{@index}}.operator">
+					<option value="add" selected="">+</option>
+					<option value="set">=</option>
+					<option value="script">S</option>
+				</select>
+			</div>
+
+			<div class="item-target flexrow">
+				<span class="change-target invalid"></span>
+			</div>
+
+			<div class="item-modifier flexrow">
+				<select class="change-modifier" name="data.changes.{{@index}}.modifier">
+					<option value="untyped">Untyped</option>
+					<option value="untypedPerm">Untyped (Permanent)</option>
+					<option value="base">Base</option>
+					<option value="enh">Enhancement</option>
+					<option value="dodge">Dodge</option>
+					<option value="inherent">Inherent</option>
+					<option value="deflection">Deflection</option>
+					<option value="morale">Morale</option>
+					<option value="luck">Luck</option>
+					<option value="sacred">Sacred</option>
+					<option value="insight">Insight</option>
+					<option value="resist">Resistance</option>
+					<option value="profane">Profane</option>
+					<option value="trait">Trait</option>
+					<option value="racial">Racial</option>
+					<option value="size">Size</option>
+					<option value="competence">Competence</option>
+					<option value="circumstance">Circumstance</option>
+					<option value="alchemical">Alchemical</option>
+					<option value="penalty">Penalty</option>
+				</select>
+			</div>
+			
+			<div class="item-priority flexrow">
+				<input class="change-priority" type="text" data-dtype="Number" name="data.changes.{{@index}}.priority" value="0" placeholder="0">
+			</div>
+
+			<div class="item-controls flexrow basic">
+				<a class="item-control change-control delete-change"><i class="fas fa-trash"></i></a>
+			</div>
+		</li>
+	{{/each}}
+  </ol>
+</form>

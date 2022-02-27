@@ -202,3 +202,13 @@ Hooks.on("createCombatant", (combat, combatant) => {
         }
     }
 })
+
+Hooks.on("renderItemSheet", (sheet, html, css) => {
+	if(canvas.scene === null) {if(AAdebug) {console.log("Active Auras disabled due to no canvas")} return}
+	if(!(game.system.id === "pf1")) return
+	let tabs = html.find('nav class="sheet-navigation tabs"')
+	let section = html.find('section class="primary-body"')
+	AAhelpers.buildEffectsHtmlEditor(tabs, section, sheet.object)
+	//tabs.append('<a class="item" data-tab="effects">Effects</a>')
+	//section.append(AAhelpers.buildEffectsHtmlEditor(sheet.object))
+})

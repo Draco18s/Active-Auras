@@ -378,4 +378,8 @@ class ActiveAuras {
 			}
 		}
     }
+
+	static TEMPLATES = {
+		EFFECTS: `modules/${this.ID}/templates/effects.hbs`
+	}
 }

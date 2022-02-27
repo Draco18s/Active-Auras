@@ -280,4 +280,31 @@ class AAhelpers {
         return { haltEffectsApplication: true }
 
     }
+
+	static buildEffectsHtmlEditor(tabs, section, pfItem) {
+		if(pfItem.data.constructor.name != "ItemData") return
+
+		let effect = null
+		for(let ef of pfItem.data.effects) {
+			if(!ef.data.flags?.ActiveAuras?.isAura) continue;
+			if(effect == null) effect = eff;
+			break;
+		}
+		tabs.append('<a class="item" data-tab="effects">Effects</a>')
+		let html = new Global.renderTemplate(ActiveAuras.TEMPLATES.EFFECTS, { effects:effect?.data?.flags?.ActiveAuras?.changes });
+
+		html.on('click', '.add-change', (event) => {
+			console.log("add change click")
+		});
+		html.on('click', '.delete-change', (event) => {
+			console.log("delete change click")
+		});
+		html.on('blur', 'input', (event) => {
+			console.log("blur click")
+		});
+		html.on('change', 'select', (event) => {
+			console.log("select change click")
+		});
+		section.append(html)
+	}
 }
