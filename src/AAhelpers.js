@@ -297,16 +297,16 @@ class AAhelpers {
 				console.log(html)
 				console.log(domObj)
 				console.log(domObj[0])
-				domObj[0].on('click', '.add-change', (event) => {
+				domObj.on('click', '.add-change', (event) => {
 					console.log("add change click")
 				});
-				domObj[0].on('click', '.delete-change', (event) => {
+				domObj.on('click', '.delete-change', (event) => {
 					console.log("delete change click")
 				});
-				domObj[0].on('blur', 'input', (event) => {
+				domObj.on('blur', 'input', (event) => {
 					console.log("blur click")
 				});
-				domObj[0].on('change', 'select', (event) => {
+				domObj.on('change', 'select', (event) => {
 					console.log("select change click")
 				});
 			}

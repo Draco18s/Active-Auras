@@ -18,14 +18,14 @@
 	{{#each effects}}
 		<li class="item change flexrow" data-change="52we25yq">
 			<div class="item-name item-formula flexrow">
-				<input class="change-formula formula" type="text" name="data.changes.{{@index}}.formula" value="" placeholder="Formula" required="">
+				<input class="change-formula formula" type="text" name="data.changes.{{@index}}.formula" value="{{this.formula}}" placeholder="Formula" required="">
 			</div>
 
 			<div class="item-operator flexrow">
 				<select class="change-operator" name="data.changes.{{@index}}.operator">
-					<option value="add" selected="">+</option>
-					<option value="set">=</option>
-					<option value="script">S</option>
+					<option value="add"{{this.operator=="add"?" selected"}}>+</option>
+					<option value="set"{{this.operator=="="?" selected"}}>=</option>
+					<option value="script"{{this.operator=="S"?" selected"}}>S</option>
 				</select>
 			</div>
 
@@ -35,31 +35,31 @@
 
 			<div class="item-modifier flexrow">
 				<select class="change-modifier" name="data.changes.{{@index}}.modifier">
-					<option value="untyped">Untyped</option>
-					<option value="untypedPerm">Untyped (Permanent)</option>
-					<option value="base">Base</option>
-					<option value="enh">Enhancement</option>
-					<option value="dodge">Dodge</option>
-					<option value="inherent">Inherent</option>
-					<option value="deflection">Deflection</option>
-					<option value="morale">Morale</option>
-					<option value="luck">Luck</option>
-					<option value="sacred">Sacred</option>
-					<option value="insight">Insight</option>
-					<option value="resist">Resistance</option>
-					<option value="profane">Profane</option>
-					<option value="trait">Trait</option>
-					<option value="racial">Racial</option>
-					<option value="size">Size</option>
-					<option value="competence">Competence</option>
-					<option value="circumstance">Circumstance</option>
-					<option value="alchemical">Alchemical</option>
-					<option value="penalty">Penalty</option>
+					<option value="untyped"{{this.modifier=="untyped"?" selected"}}>Untyped</option>
+					<option value="untypedPerm"{{this.modifier=="untypedPerm"?" selected"}}>Untyped (Permanent)</option>
+					<option value="base"{{this.modifier=="base"?" selected"}}>Base</option>
+					<option value="enh"{{this.modifier=="enh"?" selected"}}>Enhancement</option>
+					<option value="dodge"{{this.modifier=="dodge"?" selected"}}>Dodge</option>
+					<option value="inherent"{{this.modifier=="inherent"?" selected"}}>Inherent</option>
+					<option value="deflection"{{this.modifier=="deflection"?" selected"}}>Deflection</option>
+					<option value="morale"{{this.modifier=="morale"?" selected"}}>Morale</option>
+					<option value="luck"{{this.modifier=="luck"?" selected"}}>Luck</option>
+					<option value="sacred"{{this.modifier=="sacred"?" selected"}}>Sacred</option>
+					<option value="insight"{{this.modifier=="insight"?" selected"}}>Insight</option>
+					<option value="resist"{{this.modifier=="resist"?" selected"}}>Resistance</option>
+					<option value="profane"{{this.modifier=="profane"?" selected"}}>Profane</option>
+					<option value="trait"{{this.modifier=="trait"?" selected"}}>Trait</option>
+					<option value="racial"{{this.modifier=="racial"?" selected"}}>Racial</option>
+					<option value="size"{{this.modifier=="size"?" selected"}}>Size</option>
+					<option value="competence"{{this.modifier=="competence"?" selected"}}>Competence</option>
+					<option value="circumstance"{{this.modifier=="circumstance"?" selected"}}>Circumstance</option>
+					<option value="alchemical"{{this.modifier=="alchemical"?" selected"}}>Alchemical</option>
+					<option value="penalty"{{this.modifier=="penalty"?" selected"}}>Penalty</option>
 				</select>
 			</div>
 			
 			<div class="item-priority flexrow">
-				<input class="change-priority" type="text" data-dtype="Number" name="data.changes.{{@index}}.priority" value="0" placeholder="0">
+				<input class="change-priority" type="text" data-dtype="Number" name="data.changes.{{@index}}.priority" value=""{{this.priority}}"" placeholder="0">
 			</div>
 
 			<div class="item-controls flexrow basic">
