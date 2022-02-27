@@ -291,7 +291,7 @@ class AAhelpers {
 			break;
 		}
 		tabs.append('<a class="item" data-tab="effects">Effects</a>')
-		let html = new Global.renderTemplate(ActiveAuras.TEMPLATES.EFFECTS, { effects:effect?.data?.flags?.ActiveAuras?.changes });
+		let html = new renderTemplate(ActiveAuras.TEMPLATES.EFFECTS, { effects:effect?.data?.flags?.ActiveAuras?.changes });
 
 		html.on('click', '.add-change', (event) => {
 			console.log("add change click")
