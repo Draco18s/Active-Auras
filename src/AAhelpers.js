@@ -290,22 +290,26 @@ class AAhelpers {
 			if(effect == null) effect = ef;
 			break;
 		}
-		tabs.append('<a class="item" data-tab="effects">Effects</a>')
-		let html = renderTemplate(ActiveAuras.TEMPLATES.EFFECTS, { effects:effect?.data?.flags?.ActiveAuras?.changes });
-		let domObj = section.append(html)
-		console.log(html)
-		console.log(domObj)
-		domObj.on('click', '.add-change', (event) => {
-			console.log("add change click")
-		});
-		domObj.on('click', '.delete-change', (event) => {
-			console.log("delete change click")
-		});
-		domObj.on('blur', 'input', (event) => {
-			console.log("blur click")
-		});
-		domObj.on('change', 'select', (event) => {
-			console.log("select change click")
-		});
+		renderTemplate(ActiveAuras.TEMPLATES.EFFECTS, { effects:effect?.data?.flags?.ActiveAuras?.changes }).then(
+			html => {
+				tabs.append('<a class="item" data-tab="effects">Effects</a>')
+				let domObj = section.append(html)
+				console.log(html)
+				console.log(domObj)
+				console.log(domObj[0])
+				domObj[0].on('click', '.add-change', (event) => {
+					console.log("add change click")
+				});
+				domObj[0].on('click', '.delete-change', (event) => {
+					console.log("delete change click")
+				});
+				domObj[0].on('blur', 'input', (event) => {
+					console.log("blur click")
+				});
+				domObj[0].on('change', 'select', (event) => {
+					console.log("select change click")
+				});
+			}
+		)
 	}
 }
