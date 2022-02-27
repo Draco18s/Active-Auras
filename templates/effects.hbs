@@ -23,9 +23,9 @@
 
 			<div class="item-operator flexrow">
 				<select class="change-operator" name="data.changes.{{@index}}.operator">
-					<option value="add"{{this.operator=="add"?" selected"}}>+</option>
-					<option value="set"{{this.operator=="="?" selected"}}>=</option>
-					<option value="script"{{this.operator=="S"?" selected"}}>S</option>
+					<option value="add"{{if this.operator=="add" "" " selected"}}>+</option>
+					<option value="set"{{if this.operator=="=" "" " selected"}}>=</option>
+					<option value="script"{{if this.operator=="S" "" " selected"}}>S</option>
 				</select>
 			</div>
 
@@ -35,26 +35,26 @@
 
 			<div class="item-modifier flexrow">
 				<select class="change-modifier" name="data.changes.{{@index}}.modifier">
-					<option value="untyped"{{this.modifier=="untyped"?" selected"}}>Untyped</option>
-					<option value="untypedPerm"{{this.modifier=="untypedPerm"?" selected"}}>Untyped (Permanent)</option>
-					<option value="base"{{this.modifier=="base"?" selected"}}>Base</option>
-					<option value="enh"{{this.modifier=="enh"?" selected"}}>Enhancement</option>
-					<option value="dodge"{{this.modifier=="dodge"?" selected"}}>Dodge</option>
-					<option value="inherent"{{this.modifier=="inherent"?" selected"}}>Inherent</option>
-					<option value="deflection"{{this.modifier=="deflection"?" selected"}}>Deflection</option>
-					<option value="morale"{{this.modifier=="morale"?" selected"}}>Morale</option>
-					<option value="luck"{{this.modifier=="luck"?" selected"}}>Luck</option>
-					<option value="sacred"{{this.modifier=="sacred"?" selected"}}>Sacred</option>
-					<option value="insight"{{this.modifier=="insight"?" selected"}}>Insight</option>
-					<option value="resist"{{this.modifier=="resist"?" selected"}}>Resistance</option>
-					<option value="profane"{{this.modifier=="profane"?" selected"}}>Profane</option>
-					<option value="trait"{{this.modifier=="trait"?" selected"}}>Trait</option>
-					<option value="racial"{{this.modifier=="racial"?" selected"}}>Racial</option>
-					<option value="size"{{this.modifier=="size"?" selected"}}>Size</option>
-					<option value="competence"{{this.modifier=="competence"?" selected"}}>Competence</option>
-					<option value="circumstance"{{this.modifier=="circumstance"?" selected"}}>Circumstance</option>
-					<option value="alchemical"{{this.modifier=="alchemical"?" selected"}}>Alchemical</option>
-					<option value="penalty"{{this.modifier=="penalty"?" selected"}}>Penalty</option>
+					<option value="untyped"{{if this.modifier=="untyped" "" " selected"}}>Untyped</option>
+					<option value="untypedPerm"{{if this.modifier=="untypedPerm" "" " selected"}}>Untyped (Permanent)</option>
+					<option value="base"{{if this.modifier=="base" "" " selected"}}>Base</option>
+					<option value="enh"{{if this.modifier=="enh" "" " selected"}}>Enhancement</option>
+					<option value="dodge"{{if this.modifier=="dodge" "" " selected"}}>Dodge</option>
+					<option value="inherent"{{if this.modifier=="inherent" "" " selected"}}>Inherent</option>
+					<option value="deflection"{{if this.modifier=="deflection" "" " selected"}}>Deflection</option>
+					<option value="morale"{{if this.modifier=="morale" "" " selected"}}>Morale</option>
+					<option value="luck"{{if this.modifier=="luck" "" " selected"}}>Luck</option>
+					<option value="sacred"{{if this.modifier=="sacred" "" " selected"}}>Sacred</option>
+					<option value="insight"{{if this.modifier=="insight" "" " selected"}}>Insight</option>
+					<option value="resist"{{if this.modifier=="resist" "" " selected"}}>Resistance</option>
+					<option value="profane"{{if this.modifier=="profane" "" " selected"}}>Profane</option>
+					<option value="trait"{{if this.modifier=="trait" "" " selected"}}>Trait</option>
+					<option value="racial"{{if this.modifier=="racial" "" " selected"}}>Racial</option>
+					<option value="size"{{if this.modifier=="size" "" " selected"}}>Size</option>
+					<option value="competence"{{if this.modifier=="competence" "" " selected"}}>Competence</option>
+					<option value="circumstance"{{if this.modifier=="circumstance" "" " selected"}}>Circumstance</option>
+					<option value="alchemical"{{if this.modifier=="alchemical" "" " selected"}}>Alchemical</option>
+					<option value="penalty"{{if this.modifier=="penalty" "" " selected"}}>Penalty</option>
 				</select>
 			</div>
 			
