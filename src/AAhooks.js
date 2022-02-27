@@ -1,6 +1,9 @@
 Hooks.once('ready', () => {
     if(!game.modules.get('lib-wrapper')?.active && game.user.isGM)
         ui.notifications.error("Module XYZ requires the 'libWrapper' module. Please install and activate it.");
+	Handlebars.registerHelper('ifEquals', function(arg1, arg2, options) {
+		return (arg1 == arg2) ? options.fn(this) : options.inverse(this);
+	});
 });
 
 let AAgm;
