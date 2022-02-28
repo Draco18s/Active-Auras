@@ -283,11 +283,10 @@ class AAhelpers {
 
 	static buildEffectsHtmlEditor(tabs, section, sheet, pfItem) {
 		if(pfItem.data.constructor.name != "ItemData") return
-		if(ef.data.effectid) return
+		if(pfItem.data.effects.some(ef => ef.data.effectid)) return
 
 		let effect = null
 		for(let ef of pfItem.data.effects) {
-			effindex++
 			if(!ef.data.flags?.ActiveAuras?.isAura) continue
 			if(effect == null) effect = ef
 			break
@@ -299,7 +298,7 @@ class AAhelpers {
 				ignoreSelf: (effect ? effect.data.flags.ActiveAuras.ignoreSelf : false),
 				alignment: (effect ? effect.data.flags.ActiveAuras.alignment : ""),
 			},
-			effects:effect?.data?.flags?.ActiveAuras?.changes
+			effects: effect?.data?.flags?.ActiveAuras?.changes
 		}).then(
 			html => {
 				tabs.append('<a class="item" data-tab="effects">Effects</a>')

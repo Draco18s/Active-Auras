@@ -22,11 +22,11 @@
 			<div class="item-name flag-name flexrow">{{localize "ACTIVEAURAS.FORM_Alignment"}}</div>
 			<div class="item-modifier flexrow">
 				<select class="change-modifier" name="auraflags.alignment">
-					{{#select (lookup auraflags.alignment "modifier") }}
+					{{!--{{#select (lookup auraflags.alignment "modifier") }}
 					{{#each CONFIG.PF1.alignmentsShort as name}}
 					<option value="{{@key}}">{{localize name}}</option>
 					{{/each}}
-					{{/select}}
+					{{/select}}--}}
 				</select>
 			</div>
 		</li>
@@ -76,11 +76,11 @@
 
 			<div class="item-modifier flexrow">
 				<select class="change-modifier" name="data.changes.{{a}}.modifier">
-					{{#select (lookup this.data "modifier") }}
+					{{!--{{#select (lookup this.data "modifier") }}
 					{{#each ../changeGlobals.modifiers as |name type|}}
 					<option value="{{type}}">{{localize name}}</option>
 					{{/each}}
-					{{/select}}
+					{{/select}}--}}
 				</select>
 			</div>
 			
