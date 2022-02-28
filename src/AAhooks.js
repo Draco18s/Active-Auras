@@ -212,5 +212,5 @@ Hooks.on("renderItemSheet", (sheet, html, css) => {
 	let tabs = html.find("nav.sheet-navigation.tabs")
 	let section = html.find("section.primary-body")
 	if(tabs && section)
-		AAhelpers.buildEffectsHtmlEditor(tabs, section, sheet.object)
+		AAhelpers.buildEffectsHtmlEditor(tabs, section, sheet, sheet.object)
 })
