@@ -22,11 +22,11 @@
 			<div class="item-name flag-name flexrow">{{localize "ACTIVEAURAS.FORM_Alignment"}}</div>
 			<div class="item-modifier flexrow">
 				<select class="change-modifier" name="auraflags.alignment">
-					{{!--{{#select (lookup auraflags.alignment "modifier") }}
+					{{#select (lookup auraflags.alignment "alignment") }}
 					{{#each CONFIG.PF1.alignmentsShort as name}}
 					<option value="{{@key}}">{{localize name}}</option>
 					{{/each}}
-					{{/select}}--}}
+					{{/select}}
 				</select>
 			</div>
 		</li>
@@ -40,7 +40,7 @@
 		<div class="item-modifier flexrow">{{localize "PF1.Modifier"}}</div>
 		<div class="item-priority flexrow" title="{{localize "PF1.Priority"}}"><i class="fas fa-sort"></i></div>
 
-		{{#if owner}}
+		{{#if auraflags.owner}}
 		<div class="item-controls basic flexrow">
 			<a class="item-control item-create change-control add-change">
 				<i class="fas fa-plus"></i>
@@ -90,7 +90,7 @@
 			</div>
 
 			<div class="item-controls flexrow basic">
-				{{#if ../owner}}
+				{{#if auraflags.owner}}
 				<a class="item-control change-control delete-change"><i class="fas fa-trash"></i></a>
 				{{/if}}
 			</div>

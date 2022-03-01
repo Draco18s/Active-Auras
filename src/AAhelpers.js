@@ -297,6 +297,7 @@ class AAhelpers {
 				radius: (effect ? effect.data.flags.ActiveAuras.radius : 0),
 				ignoreSelf: (effect ? effect.data.flags.ActiveAuras.ignoreSelf : false),
 				alignment: (effect ? effect.data.flags.ActiveAuras.alignment : ""),
+				owner: sheet.isOwner,
 			},
 			effects: effect?.data?.flags?.ActiveAuras?.changes
 		}).then(
