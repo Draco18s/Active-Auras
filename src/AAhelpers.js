@@ -299,7 +299,9 @@ class AAhelpers {
 				alignment: (effect ? effect.data.flags.ActiveAuras.alignment : ""),
 				owner: sheet.isOwner,
 			},
-			effects: effect?.data?.flags?.ActiveAuras?.changes
+			effects: effect?.data?.flags?.ActiveAuras?.changes,
+			alignmentsShort:CONFIG.PF1.alignmentsShort,
+			changeModifiers:CONFIG.PF1.bonusModifiers
 		}).then(
 			html => {
 				tabs.append('<a class="item" data-tab="effects">Effects</a>')

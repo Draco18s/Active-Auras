@@ -1,12 +1,6 @@
 Hooks.once('ready', () => {
     if(!game.modules.get('lib-wrapper')?.active && game.user.isGM)
         ui.notifications.error("Module XYZ requires the 'libWrapper' module. Please install and activate it.");
-	Handlebars.registerHelper('alignmentsShort', function(block) {
-		return CONFIG.PF1.alignmentsShort;
-	});
-	Handlebars.registerHelper('changeModifiers', function(block) {
-		return CONFIG.PF1.bonusModifiers;
-	});
 });
 
 let AAgm;
