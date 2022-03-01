@@ -54,7 +54,7 @@
 		<li class="item change flexrow" data-change="{{change.data._id}}">
 			<div class="item-name item-formula flexrow">
 				{{#unless isScript}}
-				<input class="change-formula formula" type="text" name="data.changes.{{a}}.formula" value="{{lookup this.data "formula"}}" placeholder="{{localize "PF1.Formula"}}" required/>
+				<input class="change-formula formula" type="text" name="data.changes.{{a}}.formula" value="{{lookup change "formula"}}" placeholder="{{localize "PF1.Formula"}}" required/>
 				{{else}}
 				<button type="button" class="edit-change-contents"><i class="fas fa-edit"></i> {{localize "PF1.Edit"}}</button>
 				{{/unless}}
@@ -62,7 +62,7 @@
 
 			<div class="item-operator flexrow">
 				<select class="change-operator" name="data.changes.{{a}}.operator">
-					{{#select (lookup this.data "operator") }}
+					{{#select (lookup change "operator") }}
 					<option value="add">+</option>
 					<option value="set">=</option>
 					<option value="script">S</option>
@@ -71,12 +71,12 @@
 			</div>
 
 			<div class="item-target flexrow">
-				<span class="change-target{{#unless (lookup this.data "subTarget")}} invalid{{/unless}}">{{subTargetLabel}}</span>
+				<span class="change-target{{#unless (lookup change "subTarget")}} invalid{{/unless}}">{{subTargetLabel}}</span>
 			</div>
 
 			<div class="item-modifier flexrow">
 				<select class="change-modifier" name="data.changes.{{a}}.modifier">
-					{{#select (lookup this.data "modifier") }}
+					{{#select (lookup change "modifier") }}
 					{{#each changeModifiers as |name type|}}
 					<option value="{{type}}">{{localize name}}</option>
 					{{/each}}
