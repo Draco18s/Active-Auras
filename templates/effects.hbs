@@ -79,7 +79,7 @@
 				<div class="item-modifier flexrow">
 					<select class="change-modifier" name="data.changes.{{a}}.modifier">
 						{{#select (lookup change "modifier") }}
-						{{#each changeModifiers as |name type|}}
+						{{#each ../changeModifiers as |name type|}}
 						<option value="{{type}}">{{localize name}}</option>
 						{{/each}}
 						{{/select}}
