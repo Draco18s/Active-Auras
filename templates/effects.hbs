@@ -1,102 +1,103 @@
-<ol class="items-list changes-list">
-	{{!-- Flags --}}
-	<li class="items-header flexrow">
-		<h3 class="item-name flag-name flexrow">{{localize "PF1.CheckFlags"}}</h3>
-		<div class="item-enabled flexrow">{{localize "PF1.Value"}}</div>
-	</li>
+<div class="tab flexcol" data-group="primary" data-tab="effects">
+	<ol class="items-list changes-list">
+		{{!-- Flags --}}
+		<li class="items-header flexrow">
+			<h3 class="item-name flag-name flexrow">{{localize "PF1.CheckFlags"}}</h3>
+			<div class="item-enabled flexrow">{{localize "PF1.Value"}}</div>
+		</li>
 
-	<ol class="items-list">
-		<li class="item change-flag flexrow">
-			<div class="item-name flag-name flexrow">{{localize "ACTIVEAURAS.FORM_TargetsName"}}</div>
-			<div class="item-enabled flexrow"><input type="text" name="auraflags.aura" {{auraflags.aura}}/></div>
-		</li>
-		<li class="item change-flag flexrow">
-			<div class="item-name flag-name flexrow">{{localize "ACTIVEAURAS.FORM_Radius"}}</div>
-			<div class="item-enabled flexrow"><input type="number" name="auraflags.radius" {{auraflags.radius}}/></div>
-		</li>
-		<li class="item change-flag flexrow">
-			<div class="item-name flag-name flexrow">{{localize "ACTIVEAURAS.FORM_IgnoreSelf"}}</div>
-			<div class="item-enabled flexrow"><input type="checkbox" name="auraflags.ignoreSelf" {{checked auraflags.ignoreSelf}}/></div>
-		</li>
-		<li class="item change-flag flexrow">
-			<div class="item-name flag-name flexrow">{{localize "ACTIVEAURAS.FORM_Alignment"}}</div>
-			<div class="item-modifier flexrow">
-				<select class="change-modifier" name="auraflags.alignment">
-					{{#select (lookup auraflags.alignment "alignment") }}
-					<option value="">{{None}}</option>
-					{{#each alignmentsShort as |name type|}}
-					<option value="{{type}}">{{localize name}}</option>
-					{{/each}}
-					{{/select}}
-				</select>
+		<ol class="items-list">
+			<li class="item change-flag flexrow">
+				<div class="item-name flag-name flexrow">{{localize "ACTIVEAURAS.FORM_TargetsName"}}</div>
+				<div class="item-enabled flexrow"><input type="text" name="auraflags.aura" {{auraflags.aura}}/></div>
+			</li>
+			<li class="item change-flag flexrow">
+				<div class="item-name flag-name flexrow">{{localize "ACTIVEAURAS.FORM_Radius"}}</div>
+				<div class="item-enabled flexrow"><input type="number" name="auraflags.radius" {{auraflags.radius}}/></div>
+			</li>
+			<li class="item change-flag flexrow">
+				<div class="item-name flag-name flexrow">{{localize "ACTIVEAURAS.FORM_IgnoreSelf"}}</div>
+				<div class="item-enabled flexrow"><input type="checkbox" name="auraflags.ignoreSelf" {{checked auraflags.ignoreSelf}}/></div>
+			</li>
+			<li class="item change-flag flexrow">
+				<div class="item-name flag-name flexrow">{{localize "ACTIVEAURAS.FORM_Alignment"}}</div>
+				<div class="item-modifier flexrow">
+					<select class="change-modifier" name="auraflags.alignment">
+						{{#select (lookup auraflags.alignment "alignment") }}
+						<option value="">{{None}}</option>
+						{{#each alignmentsShort as |name type|}}
+						<option value="{{type}}">{{localize name}}</option>
+						{{/each}}
+						{{/select}}
+					</select>
+				</div>
+			</li>
+		</ol>
+
+		{{!-- Changes --}}
+		<li class="items-header change-header flexrow">
+			<h3 class="item-name flexrow">{{localize "PF1.Changes"}} <a class='help-browser' data-url="systems/pf1/help/items/concepts/changes.hbs"><i class="far fa-question-circle"></i></a></h3>
+			<div class="item-operator flexrow">{{localize "PF1.Operator"}}</div>
+			<div class="item-target flexrow">{{localize "PF1.Target"}}</div>
+			<div class="item-modifier flexrow">{{localize "PF1.Modifier"}}</div>
+			<div class="item-priority flexrow" title="{{localize "PF1.Priority"}}"><i class="fas fa-sort"></i></div>
+
+			{{#if auraflags.owner}}
+			<div class="item-controls basic flexrow">
+				<a class="item-control item-create change-control add-change">
+					<i class="fas fa-plus"></i>
+				</a>
 			</div>
+			{{/if}}
 		</li>
+
+		<ol class="items-list changes">
+		{{#each effects as |change a|}}
+			<li class="item change flexrow" data-change="{{change.data._id}}">
+				<div class="item-name item-formula flexrow">
+					{{#unless isScript}}
+					<input class="change-formula formula" type="text" name="data.changes.{{a}}.formula" value="{{lookup change "formula"}}" placeholder="{{localize "PF1.Formula"}}" required/>
+					{{else}}
+					<button type="button" class="edit-change-contents"><i class="fas fa-edit"></i> {{localize "PF1.Edit"}}</button>
+					{{/unless}}
+				</div>
+
+				<div class="item-operator flexrow">
+					<select class="change-operator" name="data.changes.{{a}}.operator">
+						{{#select (lookup change "operator") }}
+						<option value="add">+</option>
+						<option value="set">=</option>
+						<option value="script">S</option>
+						{{/select}}
+					</select>
+				</div>
+
+				<div class="item-target flexrow">
+					<span class="change-target{{#unless (lookup change "subTarget")}} invalid{{/unless}}">{{subTargetLabel}}</span>
+				</div>
+
+				<div class="item-modifier flexrow">
+					<select class="change-modifier" name="data.changes.{{a}}.modifier">
+						{{#select (lookup change "modifier") }}
+						{{#each changeModifiers as |name type|}}
+						<option value="{{type}}">{{localize name}}</option>
+						{{/each}}
+						{{/select}}
+					</select>
+				</div>
+				
+				<div class="item-priority flexrow">
+					<input class="change-priority" type="text" data-dtype="Number" name="data.changes.{{a}}.priority" value="{{lookup change.data "priority"}}"
+						placeholder="0" />
+				</div>
+
+				<div class="item-controls flexrow basic">
+					{{#if ../auraflags.owner}}
+					<a class="item-control change-control delete-change"><i class="fas fa-trash"></i></a>
+					{{/if}}
+				</div>
+			</li>
+		{{/each}}
+		</ol>
 	</ol>
-
-	{{!-- Changes --}}
-	<li class="items-header change-header flexrow">
-		<h3 class="item-name flexrow">{{localize "PF1.Changes"}} <a class='help-browser' data-url="systems/pf1/help/items/concepts/changes.hbs"><i class="far fa-question-circle"></i></a></h3>
-		<div class="item-operator flexrow">{{localize "PF1.Operator"}}</div>
-		<div class="item-target flexrow">{{localize "PF1.Target"}}</div>
-		<div class="item-modifier flexrow">{{localize "PF1.Modifier"}}</div>
-		<div class="item-priority flexrow" title="{{localize "PF1.Priority"}}"><i class="fas fa-sort"></i></div>
-
-		{{#if auraflags.owner}}
-		<div class="item-controls basic flexrow">
-			<a class="item-control item-create change-control add-change">
-				<i class="fas fa-plus"></i>
-			</a>
-		</div>
-		{{/if}}
-	</li>
-
-	<ol class="items-list changes">
-	{{#each effects as |change a|}}
-		<li class="item change flexrow" data-change="{{change.data._id}}">
-			<div class="item-name item-formula flexrow">
-				{{#unless isScript}}
-				<input class="change-formula formula" type="text" name="data.changes.{{a}}.formula" value="{{lookup change "formula"}}" placeholder="{{localize "PF1.Formula"}}" required/>
-				{{else}}
-				<button type="button" class="edit-change-contents"><i class="fas fa-edit"></i> {{localize "PF1.Edit"}}</button>
-				{{/unless}}
-			</div>
-
-			<div class="item-operator flexrow">
-				<select class="change-operator" name="data.changes.{{a}}.operator">
-					{{#select (lookup change "operator") }}
-					<option value="add">+</option>
-					<option value="set">=</option>
-					<option value="script">S</option>
-					{{/select}}
-				</select>
-			</div>
-
-			<div class="item-target flexrow">
-				<span class="change-target{{#unless (lookup change "subTarget")}} invalid{{/unless}}">{{subTargetLabel}}</span>
-			</div>
-
-			<div class="item-modifier flexrow">
-				<select class="change-modifier" name="data.changes.{{a}}.modifier">
-					{{#select (lookup change "modifier") }}
-					<option value="no">MISSINGNO</option>
-					{{#each changeModifiers as |name type|}}
-					<option value="{{type}}">{{localize name}}</option>
-					{{/each}}
-					{{/select}}
-				</select>
-			</div>
-			
-			<div class="item-priority flexrow">
-				<input class="change-priority" type="text" data-dtype="Number" name="data.changes.{{a}}.priority" value="{{lookup change.data "priority"}}"
-					placeholder="0" />
-			</div>
-
-			<div class="item-controls flexrow basic">
-				{{#if auraflags.owner}}
-				<a class="item-control change-control delete-change"><i class="fas fa-trash"></i></a>
-				{{/if}}
-			</div>
-		</li>
-	{{/each}}
-	</ol>
-</ol>
+</div>

@@ -303,14 +303,16 @@ class AAhelpers {
 			alignmentsShort:CONFIG.PF1.alignmentsShort,
 			changeModifiers:CONFIG.PF1.bonusModifiers
 		}
-		console.log(CONFIG.PF1.alignmentsShort);
-		console.log(CONFIG.PF1.bonusModifiers);
-		console.log(templateData);
+		console.log(CONFIG.PF1.alignmentsShort)
+		console.log(CONFIG.PF1.bonusModifiers)
+		console.log(templateData)
 		renderTemplate(ActiveAuras.TEMPLATES.EFFECTS, templateData).then(
 			html => {
 				tabs.append('<a class="item" data-tab="effects">Effects</a>')
 				let domObj = section.append(html)
 				domObj.on('click', '.add-change', (event) => {
+					if(event.currentTarget.parent("div.tab").attr("data-tab") != "effects") return
+					event.stopPropagation()
 					console.log("add change click")
 					if(!effect.data.flags.ActiveAuras) {
 						effect.data.flags.ActiveAuras = {
@@ -347,30 +349,34 @@ class AAhelpers {
 					}
 					const changes = duplicate(pfItem.data.effects)
 					pfItem.update({ "data.effects" : changes })
-					event.stopPropagation()
 				})
 				domObj.on('click', '.delete-change', (event) => {
+					if(event.currentTarget.parent("div.tab").attr("data-tab") != "effects") return
+					event.stopPropagation()
 					console.log("delete change click")
 					const li = a.closest(".change")
 					const changes = duplicate(pfItem.data.effects)
 					const change = changes[pfItem.data.effects.indexOf(effect)].data.flags.ActiveAuras.changes.find((o) => o._id === li.dataset.change)
 					changes.splice(changes.indexOf(change), 1)
 					pfItem.update({ "data.effects" : changes })
-					event.stopPropagation()
 					//return sheet._onSubmit(event, { updateData: { "data.effects": changes } })
 				})
 				domObj.on('blur', 'input', (event) => {
-					console.log("blur click")
-					console.log(event);
-					pfItem.update({ "data.effects" : changes })
+					if(event.currentTarget.parent("div.tab").attr("data-tab") != "effects") return
 					event.stopPropagation()
+					console.log("blur click")
+					console.log(event)
+					const changes = duplicate(pfItem.data.effects)
+					pfItem.update({ "data.effects" : changes })
 					//sheet._onChangeInput.bind(pfItem)
 				})
 				domObj.on('change', 'select', (event) => {
-					console.log("select change click")
-					console.log(event);
-					pfItem.update({ "data.effects" : changes })
+					if(event.currentTarget.parent("div.tab").attr("data-tab") != "effects") return
 					event.stopPropagation()
+					console.log("select change click")
+					console.log(event)
+					const changes = duplicate(pfItem.data.effects)
+					pfItem.update({ "data.effects" : changes })
 					//sheet._onChangeInput.bind(pfItem)
 				})
 			}
