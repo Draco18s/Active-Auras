@@ -291,7 +291,7 @@ class AAhelpers {
 			if(effect == null) effect = ef
 			break
 		}
-		renderTemplate(ActiveAuras.TEMPLATES.EFFECTS, {
+		let templateData = {
 			auraflags: {
 				aura: (effect ? effect.data.flags.ActiveAuras.aura : "Allies"),
 				radius: (effect ? effect.data.flags.ActiveAuras.radius : 0),
@@ -302,7 +302,11 @@ class AAhelpers {
 			effects: effect?.data?.flags?.ActiveAuras?.changes,
 			alignmentsShort:CONFIG.PF1.alignmentsShort,
 			changeModifiers:CONFIG.PF1.bonusModifiers
-		}).then(
+		}
+		console.log(CONFIG.PF1.alignmentsShort);
+		console.log(CONFIG.PF1.bonusModifiers);
+		console.log(templateData);
+		renderTemplate(ActiveAuras.TEMPLATES.EFFECTS, templateData).then(
 			html => {
 				tabs.append('<a class="item" data-tab="effects">Effects</a>')
 				let domObj = section.append(html)
