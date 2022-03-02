@@ -334,11 +334,11 @@ class AAhelpers {
 						}
 					}
 					if(!effect.data.flags.ActiveAuras.effectid) {
-						effect.data.flags.ActiveAuras.effectid = makeid(16)
+						effect.data.flags.ActiveAuras.effectid = AAhelpers.makeid(16)
 					}
 					if(!effect.data.flags.ActiveAuras.changes) {
 						effect.data.flags.ActiveAuras.changes = [{
-							_id: makeid(8),
+							_id: AAhelpers.makeid(8),
 							formula: "",
 							operator: "add",
 							subTarget: "",
