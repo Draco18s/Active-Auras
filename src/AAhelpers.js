@@ -297,7 +297,7 @@ class AAhelpers {
 				radius: (effect ? effect.data.flags.ActiveAuras.radius : 0),
 				ignoreSelf: (effect ? effect.data.flags.ActiveAuras.ignoreSelf : false),
 				alignment: (effect ? effect.data.flags.ActiveAuras.alignment : ""),
-				owner: sheet.isOwner,
+				owner: effect.isOwner,
 			},
 			effects: effect?.data?.flags?.ActiveAuras?.changes,
 			alignmentsShort:CONFIG.PF1.alignmentsShort,
@@ -347,6 +347,7 @@ class AAhelpers {
 					}
 					const changes = duplicate(pfItem.data.effects)
 					pfItem.update({ "data.effects" : changes })
+					event.stopPropagation()
 				})
 				domObj.on('click', '.delete-change', (event) => {
 					console.log("delete change click")
@@ -355,14 +356,21 @@ class AAhelpers {
 					const change = changes[pfItem.data.effects.indexOf(effect)].data.flags.ActiveAuras.changes.find((o) => o._id === li.dataset.change)
 					changes.splice(changes.indexOf(change), 1)
 					pfItem.update({ "data.effects" : changes })
+					event.stopPropagation()
 					//return sheet._onSubmit(event, { updateData: { "data.effects": changes } })
 				})
 				domObj.on('blur', 'input', (event) => {
 					console.log("blur click")
+					console.log(event);
+					pfItem.update({ "data.effects" : changes })
+					event.stopPropagation()
 					//sheet._onChangeInput.bind(pfItem)
 				})
 				domObj.on('change', 'select', (event) => {
 					console.log("select change click")
+					console.log(event);
+					pfItem.update({ "data.effects" : changes })
+					event.stopPropagation()
 					//sheet._onChangeInput.bind(pfItem)
 				})
 			}
