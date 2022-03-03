@@ -287,10 +287,10 @@ class AAhelpers {
 		//effect
 		let templateData = {
 			auraflags: {
-				aura: (pfItem ? pfItem.data.flags.ActiveAuras.aura : "Allies"),
-				radius: (pfItem ? pfItem.data.flags.ActiveAuras.radius : 0),
-				ignoreSelf: (pfItem ? pfItem.data.flags.ActiveAuras.ignoreSelf : false),
-				alignment: (pfItem ? pfItem.data.flags.ActiveAuras.alignment : ""),
+				aura: (pfItem ? pfItem.data.flags.ActiveAuras?.aura : "Allies"),
+				radius: (pfItem ? pfItem.data.flags.ActiveAuras?.radius : 0),
+				ignoreSelf: (pfItem ? pfItem.data.flags.ActiveAuras?.ignoreSelf : false),
+				alignment: (pfItem ? pfItem.data.flags.ActiveAuras?.alignment : ""),
 				owner: pfItem.isOwner,
 			},
 			effects: pfItem?.data?.flags?.ActiveAuras?.changes,
@@ -301,11 +301,16 @@ class AAhelpers {
 		
 		tabs.append('<a class="item" data-tab="effects">Effects</a>')
 		let domObj = section.append(html)
+		domObj.off('click')
+		domObj.off('blur')
+		domObj.off('change')
+		
 		domObj.on('click', '.add-change', (event) => {
 			if(jQuery(event.currentTarget).closest("div.tab").attr("data-tab") != "effects") return
 			event.stopPropagation()
 			console.log("add change click")
-			let newChanges = duplicate(pfItem.data.flags.ActiveAuras.changes)
+			let newChanges = []
+			if(pfItem.data.flags.ActiveAuras?.changes) duplicate(pfItem.data.flags.ActiveAuras.changes)
 			newChanges.push({
 				_id: AAhelpers.makeid(8),
 				formula: "",

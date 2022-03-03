@@ -56,14 +56,14 @@
 			<li class="item change flexrow" data-change="{{change.data._id}}">
 				<div class="item-name item-formula flexrow">
 					{{#unless isScript}}
-					<input class="change-formula formula" type="text" name="data.changes.{{a}}.formula" value="{{lookup change "formula"}}" placeholder="{{localize "PF1.Formula"}}" required/>
+					<input class="change-formula formula" type="text" name="aura.changes.{{a}}.formula" value="{{lookup change "formula"}}" placeholder="{{localize "PF1.Formula"}}" required/>
 					{{else}}
 					<button type="button" class="edit-change-contents"><i class="fas fa-edit"></i> {{localize "PF1.Edit"}}</button>
 					{{/unless}}
 				</div>
 
 				<div class="item-operator flexrow">
-					<select class="change-operator" name="data.changes.{{a}}.operator">
+					<select class="change-operator" name="aura.changes.{{a}}.operator">
 						{{#select (lookup change "operator") }}
 						<option value="add">+</option>
 						<option value="set">=</option>
@@ -77,7 +77,7 @@
 				</div>
 
 				<div class="item-modifier flexrow">
-					<select class="change-modifier" name="data.changes.{{a}}.modifier">
+					<select class="change-modifier" name="aura.changes.{{a}}.modifier">
 						{{#select (lookup change "modifier") }}
 						{{#each ../changeModifiers as |name type|}}
 						<option value="{{type}}">{{localize name}}</option>
@@ -87,7 +87,7 @@
 				</div>
 				
 				<div class="item-priority flexrow">
-					<input class="change-priority" type="text" data-dtype="Number" name="data.changes.{{a}}.priority" value="{{lookup change.data "priority"}}"
+					<input class="change-priority" type="text" data-dtype="Number" name="aura.changes.{{a}}.priority" value="{{lookup change.data "priority"}}"
 						placeholder="0" />
 				</div>
 
