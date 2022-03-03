@@ -368,6 +368,6 @@ class ActiveAuras {
 
 	static TEMPLATES = {
 		EFFECTSURL: "modules/ActiveAuras/templates/effects.hbs",
-		EFFECTS = null
+		EFFECTS: null
 	}
 }
