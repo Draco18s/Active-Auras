@@ -297,36 +297,44 @@ class AAhelpers {
 			alignmentsShort:CONFIG.PF1.alignmentsShort,
 			changeModifiers:CONFIG.PF1.bonusModifiers
 		}
-		renderTemplate(ActiveAuras.TEMPLATES.EFFECTS, templateData).then(
-			html => {
-				tabs.append('<a class="item" data-tab="effects">Effects</a>')
-				let domObj = section.append(html)
-				domObj.on('click', '.add-change', (event) => {
-					if(jQuery(event.currentTarget).closest("div.tab").attr("data-tab") != "effects") return
-					event.stopPropagation()
-					console.log("add change click")
-					
-				})
-				domObj.on('click', '.delete-change', (event) => {
-					if(jQuery(event.currentTarget).closest("div.tab").attr("data-tab") != "effects") return
-					event.stopPropagation()
-					console.log("delete change click")
-					//return sheet._onSubmit(event, { updateData: { "data.effects": changes } })
-				})
-				domObj.on('blur', 'input', (event) => {
-					if(jQuery(event.currentTarget).closest("div.tab").attr("data-tab") != "effects") return
-					event.stopPropagation()
-					console.log("blur click")
-					//sheet._onChangeInput.bind(pfItem)
-				})
-				domObj.on('change', 'select', (event) => {
-					if(jQuery(event.currentTarget).closest("div.tab").attr("data-tab") != "effects") return
-					event.stopPropagation()
-					console.log("select change click")
-					//sheet._onChangeInput.bind(pfItem)
-				})
-			}
-		)
+		let html = ActiveAuras.TEMPLATES.EFFECTS(templateData,{ allowProtoMethodsByDefault: true, allowProtoPropertiesByDefault: true });
+		
+		tabs.append('<a class="item" data-tab="effects">Effects</a>')
+		let domObj = section.append(html)
+		domObj.on('click', '.add-change', (event) => {
+			if(jQuery(event.currentTarget).closest("div.tab").attr("data-tab") != "effects") return
+			event.stopPropagation()
+			console.log("add change click")
+			let newChanges = duplicate(pfItem.data.flags.ActiveAuras.changes)
+			newChanges.push({
+				_id: AAhelpers.makeid(8),
+				formula: "",
+				operator: "add",
+				subTarget: "",
+				modifier: "untyped",
+				priority: 0,
+				value: 0
+			})
+			pfItem.setFlag("ActiveAuras", "changes", newChanges)
+		})
+		domObj.on('click', '.delete-change', (event) => {
+			if(jQuery(event.currentTarget).closest("div.tab").attr("data-tab") != "effects") return
+			event.stopPropagation()
+			console.log("delete change click")
+			//return sheet._onSubmit(event, { updateData: { "data.effects": changes } })
+		})
+		domObj.on('blur', 'input', (event) => {
+			if(jQuery(event.currentTarget).closest("div.tab").attr("data-tab") != "effects") return
+			event.stopPropagation()
+			console.log("blur click")
+			//sheet._onChangeInput.bind(pfItem)
+		})
+		domObj.on('change', 'select', (event) => {
+			if(jQuery(event.currentTarget).closest("div.tab").attr("data-tab") != "effects") return
+			event.stopPropagation()
+			console.log("select change click")
+			//sheet._onChangeInput.bind(pfItem)
+		})
 	}
 
 	static makeid(length) {
