@@ -304,7 +304,7 @@ class AAhelpers {
 		domObj.off('click')
 		domObj.off('blur')
 		domObj.off('change')
-		
+
 		domObj.on('click', '.add-change', (event) => {
 			if(jQuery(event.currentTarget).closest("div.tab").attr("data-tab") != "effects") return
 			event.stopPropagation()
@@ -326,6 +326,11 @@ class AAhelpers {
 			if(jQuery(event.currentTarget).closest("div.tab").attr("data-tab") != "effects") return
 			event.stopPropagation()
 			console.log("delete change click")
+			let newChanges = duplicate(pfItem.data.flags.ActiveAuras.changes)
+			let id = jQuery(event.currentTarget).closest(".change").attr("data-change")
+			console.log(id)
+			newChanges = newChanges.filter(x => x._id != id)
+			pfItem.setFlag("ActiveAuras", "changes", newChanges)
 			//return sheet._onSubmit(event, { updateData: { "data.effects": changes } })
 		})
 		domObj.on('blur', 'input', (event) => {
