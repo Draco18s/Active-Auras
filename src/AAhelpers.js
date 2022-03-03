@@ -283,6 +283,7 @@ class AAhelpers {
 
 	static buildEffectsHtmlEditor(tabs, section, sheet, pfItem) {
 		if(pfItem.data.constructor.name != "ItemData") return
+		windowOpen = true
 		//if(pfItem.data.effects.some(ef => ef.data.effectid)) return //todo: remove
 		//effect
 		let templateData = {
@@ -297,6 +298,11 @@ class AAhelpers {
 			alignmentsShort:CONFIG.PF1.alignmentsShort,
 			changeModifiers:CONFIG.PF1.bonusModifiers
 		}
+		if(templateData.effects?.length > 0) {
+			for (const ch of templateData.effects) {
+				ch.subTargetLabel = ch.subTarget == "" ? "" : CONFIG.PF1.buffTargets[ch.subTarget].label
+			}
+		}
 		let html = ActiveAuras.TEMPLATES.EFFECTS(templateData,{ allowProtoMethodsByDefault: true, allowProtoPropertiesByDefault: true });
 		
 		tabs.append('<a class="item" data-tab="effects">Effects</a>')
@@ -310,7 +316,10 @@ class AAhelpers {
 			event.stopPropagation()
 			console.log("add change click")
 			let newChanges = []
-			if(pfItem.data.flags.ActiveAuras?.changes) duplicate(pfItem.data.flags.ActiveAuras.changes)
+			if(pfItem.data.flags.ActiveAuras?.changes) {
+				newChanges = duplicate(pfItem.getFlag("ActiveAuras", "changes"))
+			}
+			console.log(newChanges)
 			newChanges.push({
 				_id: AAhelpers.makeid(8),
 				formula: "",
@@ -321,30 +330,112 @@ class AAhelpers {
 				value: 0
 			})
 			pfItem.setFlag("ActiveAuras", "changes", newChanges)
+			tabObject = tabs
+			windowOpen = false
+			setTimeout(() => {
+				console.log("this is the first message")
+				waitForRerender();
+			}, 10);
 		})
 		domObj.on('click', '.delete-change', (event) => {
 			if(jQuery(event.currentTarget).closest("div.tab").attr("data-tab") != "effects") return
 			event.stopPropagation()
 			console.log("delete change click")
 			let newChanges = duplicate(pfItem.data.flags.ActiveAuras.changes)
-			let id = jQuery(event.currentTarget).closest(".change").attr("data-change")
-			console.log(id)
-			newChanges = newChanges.filter(x => x._id != id)
+			let id = jQuery(event.currentTarget).closest(".change").attr("data-index")
+			newChanges.splice(id, 1)
 			pfItem.setFlag("ActiveAuras", "changes", newChanges)
-			//return sheet._onSubmit(event, { updateData: { "data.effects": changes } })
+			tabObject = tabs
+			windowOpen = false
+			setTimeout(() => {
+				console.log("this is the first message")
+				waitForRerender();
+			}, 10);
 		})
 		domObj.on('blur', 'input', (event) => {
 			if(jQuery(event.currentTarget).closest("div.tab").attr("data-tab") != "effects") return
 			event.stopPropagation()
 			console.log("blur click")
-			//sheet._onChangeInput.bind(pfItem)
+			const a = jQuery(event.currentTarget)
+			let parts = a.attr("name").toString().split('.')
+			let part = parts[parts.length-1]
+			const newChanges = duplicate(pfItem.getFlag("ActiveAuras", "changes"))
+			newChanges[a.closest(".change").attr("data-index")][part] = a.val()
+			console.log(newChanges)
+			pfItem.setFlag("ActiveAuras", "changes", newChanges)
+			tabObject = tabs
+			windowOpen = false
+			setTimeout(() => {
+				console.log("this is the first message")
+				waitForRerender();
+			}, 10);
 		})
 		domObj.on('change', 'select', (event) => {
 			if(jQuery(event.currentTarget).closest("div.tab").attr("data-tab") != "effects") return
 			event.stopPropagation()
 			console.log("select change click")
-			//sheet._onChangeInput.bind(pfItem)
+			const a = jQuery(event.currentTarget)
+			const newChanges = duplicate(pfItem.getFlag("ActiveAuras", "changes"))
+			newChanges[a.closest(".change").attr("data-index")].operator = a.val()
+			console.log(newChanges)
+			pfItem.setFlag("ActiveAuras", "changes", newChanges)
+			tabObject = tabs
+			windowOpen = false
+			setTimeout(() => {
+				console.log("this is the first message")
+				waitForRerender();
+			}, 10);
 		})
+		domObj.on('click', ".change .change-target", (event) => {
+			if(jQuery(event.currentTarget).closest("div.tab").attr("data-tab") != "effects") return
+			console.log("target change click")
+			event.preventDefault();
+			const a = jQuery(event.currentTarget);
+
+			// Prepare categories and changes to display
+			const newChanges = duplicate(pfItem.getFlag("ActiveAuras", "changes"))
+			const change = newChanges[a.closest(".change").attr("data-index")]
+			const categories = game.pf1.functions.getBuffTargetDictionary(pfItem.actor)
+
+			const part1 = change?.subTarget?.split(".")[0]
+			const category = CONFIG.PF1.buffTargets[part1]?.category ?? part1
+			// Show widget
+			const w = new game.pf1.applications.Widget_CategorizedItemPicker(
+				{ title: "PF1.Application.ChangeTargetSelector.Title" },
+				categories,
+				(key) => {
+					if (key) {
+						newChanges[a.closest(".change").attr("data-index")].subTarget = key
+						pfItem.setFlag("ActiveAuras", "changes", newChanges)
+						tabObject = tabs
+						windowOpen = false
+						setTimeout(() => {
+							console.log("this is the first message")
+							waitForRerender();
+						}, 10);
+					}
+				},
+				{ category, item: change?.subTarget }
+			);
+			sheet._openApplications.push(w.appId)
+			w.render(true)
+		});
+	}
+
+	static windowOpen = false
+	static tabObject = null
+	static waitForRerender() {
+		if(windowOpen) {
+			console.log("Here")
+			windowOpen = false
+			tabObject.click()
+			tabObject = null
+		}
+		else {
+			setTimeout(() => {
+				waitForRerender();
+			}, 10);
+		}
 	}
 
 	static makeid(length) {

@@ -53,8 +53,7 @@
 
 		<ol class="items-list changes">
 		{{#each effects as |change a|}}
-			<li class="item change flexrow" data-change="{{change.data._id}}" data-index="{{a}}">
-				<input class="hidden" type="hidden" value="{{change.data._id}}"/>
+			<li class="item change flexrow" data-index="{{a}}">
 				<div class="item-name item-formula flexrow">
 					{{#unless isScript}}
 					<input class="change-formula formula" type="text" name="aura.changes.{{a}}.formula" value="{{lookup change "formula"}}" placeholder="{{localize "PF1.Formula"}}" required/>
