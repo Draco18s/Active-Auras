@@ -315,11 +315,11 @@ class AAhelpers {
 			if(jQuery(event.currentTarget).closest("div.tab").attr("data-tab") != "effects") return
 			event.stopPropagation()
 			console.log("add change click")
+			setTimeout(() => {waitForWindow()}, 10);
 			let newChanges = []
 			if(pfItem.data.flags.ActiveAuras?.changes) {
 				newChanges = duplicate(pfItem.getFlag("ActiveAuras", "changes"))
 			}
-			console.log(newChanges)
 			newChanges.push({
 				_id: AAhelpers.makeid(8),
 				formula: "",
@@ -330,45 +330,28 @@ class AAhelpers {
 				value: 0
 			})
 			pfItem.setFlag("ActiveAuras", "changes", newChanges)
-			tabObject = tabs
-			windowOpen = false
-			setTimeout(() => {
-				console.log("this is the first message")
-				waitForRerender();
-			}, 10);
 		})
 		domObj.on('click', '.delete-change', (event) => {
 			if(jQuery(event.currentTarget).closest("div.tab").attr("data-tab") != "effects") return
 			event.stopPropagation()
 			console.log("delete change click")
+			setTimeout(() => {waitForWindow()}, 10);
 			let newChanges = duplicate(pfItem.data.flags.ActiveAuras.changes)
 			let id = jQuery(event.currentTarget).closest(".change").attr("data-index")
 			newChanges.splice(id, 1)
 			pfItem.setFlag("ActiveAuras", "changes", newChanges)
-			tabObject = tabs
-			windowOpen = false
-			setTimeout(() => {
-				console.log("this is the first message")
-				waitForRerender();
-			}, 10);
 		})
 		domObj.on('blur', 'input', (event) => {
 			if(jQuery(event.currentTarget).closest("div.tab").attr("data-tab") != "effects") return
 			event.stopPropagation()
 			console.log("blur click")
+			setTimeout(() => {waitForWindow()}, 10);
 			const a = jQuery(event.currentTarget)
 			let parts = a.attr("name").toString().split('.')
 			let part = parts[parts.length-1]
 			const newChanges = duplicate(pfItem.getFlag("ActiveAuras", "changes"))
 			newChanges[a.closest(".change").attr("data-index")][part] = a.val()
-			console.log(newChanges)
 			pfItem.setFlag("ActiveAuras", "changes", newChanges)
-			tabObject = tabs
-			windowOpen = false
-			setTimeout(() => {
-				console.log("this is the first message")
-				waitForRerender();
-			}, 10);
 		})
 		domObj.on('change', 'select', (event) => {
 			if(jQuery(event.currentTarget).closest("div.tab").attr("data-tab") != "effects") return
@@ -377,14 +360,10 @@ class AAhelpers {
 			const a = jQuery(event.currentTarget)
 			const newChanges = duplicate(pfItem.getFlag("ActiveAuras", "changes"))
 			newChanges[a.closest(".change").attr("data-index")].operator = a.val()
-			console.log(newChanges)
+			setTimeout(() => {waitForWindow()}, 10);
 			pfItem.setFlag("ActiveAuras", "changes", newChanges)
 			tabObject = tabs
 			windowOpen = false
-			setTimeout(() => {
-				console.log("this is the first message")
-				waitForRerender();
-			}, 10);
 		})
 		domObj.on('click', ".change .change-target", (event) => {
 			if(jQuery(event.currentTarget).closest("div.tab").attr("data-tab") != "effects") return
@@ -392,7 +371,6 @@ class AAhelpers {
 			event.preventDefault();
 			const a = jQuery(event.currentTarget);
 
-			// Prepare categories and changes to display
 			const newChanges = duplicate(pfItem.getFlag("ActiveAuras", "changes"))
 			const change = newChanges[a.closest(".change").attr("data-index")]
 			const categories = game.pf1.functions.getBuffTargetDictionary(pfItem.actor)
@@ -405,14 +383,11 @@ class AAhelpers {
 				categories,
 				(key) => {
 					if (key) {
+						setTimeout(() => {waitForWindow()}, 10);
 						newChanges[a.closest(".change").attr("data-index")].subTarget = key
 						pfItem.setFlag("ActiveAuras", "changes", newChanges)
 						tabObject = tabs
 						windowOpen = false
-						setTimeout(() => {
-							console.log("this is the first message")
-							waitForRerender();
-						}, 10);
 					}
 				},
 				{ category, item: change?.subTarget }
@@ -422,20 +397,15 @@ class AAhelpers {
 		});
 	}
 
-	static windowOpen = false
-	static tabObject = null
-	static waitForRerender() {
-		if(windowOpen) {
-			console.log("Here")
-			windowOpen = false
-			tabObject.click()
-			tabObject = null
-		}
-		else {
-			setTimeout(() => {
-				waitForRerender();
-			}, 10);
-		}
+	static waitForWindow() {
+		let area = jQuery("#actor-"+pfItem.parent.id+"-item-"+pfItem.id)
+		if(!area) setTimeout(() => {waitForWindow()}, 10);
+		let nav = area.find("nav[data-group='primary']")
+		let sec = area.find("section.primary-body")
+		nav.find(".active").removeClass("active")
+		nav.find(".item[data-tab='effects']").addClass("active")
+		sec.find(".active").removeClass("active")
+		sec.find(".tab[data-tab='effects']").addClass("active")
 	}
 
 	static makeid(length) {
