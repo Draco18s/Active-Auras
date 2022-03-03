@@ -284,22 +284,16 @@ class AAhelpers {
 	static buildEffectsHtmlEditor(tabs, section, sheet, pfItem) {
 		if(pfItem.data.constructor.name != "ItemData") return
 		//if(pfItem.data.effects.some(ef => ef.data.effectid)) return //todo: remove
-
-		let effect = null
-		for(let ef of pfItem.data.effects) {
-			if(!ef.data.flags?.ActiveAuras?.isAura) continue
-			if(effect == null) effect = ef
-			break
-		}
+		//effect
 		let templateData = {
 			auraflags: {
-				aura: (effect ? effect.data.flags.ActiveAuras.aura : "Allies"),
-				radius: (effect ? effect.data.flags.ActiveAuras.radius : 0),
-				ignoreSelf: (effect ? effect.data.flags.ActiveAuras.ignoreSelf : false),
-				alignment: (effect ? effect.data.flags.ActiveAuras.alignment : ""),
+				aura: (pfItem ? pfItem.data.flags.ActiveAuras.aura : "Allies"),
+				radius: (pfItem ? pfItem.data.flags.ActiveAuras.radius : 0),
+				ignoreSelf: (pfItem ? pfItem.data.flags.ActiveAuras.ignoreSelf : false),
+				alignment: (pfItem ? pfItem.data.flags.ActiveAuras.alignment : ""),
 				owner: pfItem.isOwner,
 			},
-			effects: effect?.data?.flags?.ActiveAuras?.changes,
+			effects: pfItem?.data?.flags?.ActiveAuras?.changes,
 			alignmentsShort:CONFIG.PF1.alignmentsShort,
 			changeModifiers:CONFIG.PF1.bonusModifiers
 		}
@@ -311,81 +305,24 @@ class AAhelpers {
 					if(jQuery(event.currentTarget).closest("div.tab").attr("data-tab") != "effects") return
 					event.stopPropagation()
 					console.log("add change click")
-					let itemchanges = { };
-					itemchanges[effect.id] = {}
-					itemchanges[effect.id].data = {}
-					if(!effect.data.flags.ActiveAuras) {
-						itemchanges[effect.id].data.flags = {
-							ActiveAuras: {
-								effectid: AAhelpers.makeid(16),
-								aura: "Allies",
-								radius: 30,
-								isAura: true,
-								inactive: false,
-								hidden: false,
-								ignoreSelf: false,
-								height: false,
-								alignment: "",
-								type: "",
-								save: "",
-								savedc: null,
-								hostile: false,
-								onlyOnce: false,
-								time: "None",
-								displayTemp: false,
-								changes: [{
-									_id: AAhelpers.makeid(8),
-									formula: "",
-									operator: "add",
-									subTarget: "",
-									modifier: "untyped",
-									priority: 0,
-									value: 0
-								}]
-							}
-						}
-					}
-					else {
-						itemchanges[effect.id].data.flags = duplicate(effect.data.flags)
-						itemchanges[effect.id].data.flags.ActiveAuras.changes.add({
-							_id: AAhelpers.makeid(8),
-							formula: "",
-							operator: "add",
-							subTarget: "",
-							modifier: "untyped",
-							priority: 0,
-							value: 0
-						})
-					}
-					pfItem.update({ "data.effects" : itemchanges })
+					
 				})
 				domObj.on('click', '.delete-change', (event) => {
 					if(jQuery(event.currentTarget).closest("div.tab").attr("data-tab") != "effects") return
 					event.stopPropagation()
 					console.log("delete change click")
-					const li = a.closest(".change")
-					const changes = duplicate(pfItem.data.effects)
-					const change = changes[pfItem.data.effects.indexOf(effect)].data.flags.ActiveAuras.changes.find((o) => o._id === li.dataset.change)
-					changes.splice(changes.indexOf(change), 1)
-					pfItem.update({ "data.effects" : changes })
 					//return sheet._onSubmit(event, { updateData: { "data.effects": changes } })
 				})
 				domObj.on('blur', 'input', (event) => {
 					if(jQuery(event.currentTarget).closest("div.tab").attr("data-tab") != "effects") return
 					event.stopPropagation()
 					console.log("blur click")
-					console.log(event)
-					const changes = duplicate(pfItem.data.effects)
-					pfItem.update({ "data.effects" : changes })
 					//sheet._onChangeInput.bind(pfItem)
 				})
 				domObj.on('change', 'select', (event) => {
 					if(jQuery(event.currentTarget).closest("div.tab").attr("data-tab") != "effects") return
 					event.stopPropagation()
 					console.log("select change click")
-					console.log(event)
-					const changes = duplicate(pfItem.data.effects)
-					pfItem.update({ "data.effects" : changes })
 					//sheet._onChangeInput.bind(pfItem)
 				})
 			}
