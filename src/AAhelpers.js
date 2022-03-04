@@ -312,11 +312,27 @@ class AAhelpers {
 		domObj.on('click', '.add-change', (event) => {
 			if(jQuery(event.currentTarget).closest("div.tab").attr("data-tab") != "effects") return
 			event.stopPropagation()
-			console.log("add change click")
-			setTimeout(() => {waitForWindow(windowID)}, 30);
+			setTimeout(() => {AAhelpers.waitForWindow(windowID)}, 50);
 			let newChanges = []
 			if(pfItem.data.flags.ActiveAuras?.changes) {
 				newChanges = duplicate(pfItem.getFlag("ActiveAuras", "changes"))
+			}
+			else {
+				pfItem.setFlag("ActiveAuras", "aura", "Allies")
+				pfItem.setFlag("ActiveAuras", "radius", 30)
+				pfItem.setFlag("ActiveAuras", "isAura", true)
+				pfItem.setFlag("ActiveAuras", "inactive", false)
+				pfItem.setFlag("ActiveAuras", "hidden", false)
+				pfItem.setFlag("ActiveAuras", "ignoreSelf", false)
+				pfItem.setFlag("ActiveAuras", "height", false)
+				pfItem.setFlag("ActiveAuras", "alignment", "")
+				pfItem.setFlag("ActiveAuras", "type", "")
+				pfItem.setFlag("ActiveAuras", "save", "")
+				pfItem.setFlag("ActiveAuras", "savedc", null)
+				pfItem.setFlag("ActiveAuras", "hostile", false)
+				pfItem.setFlag("ActiveAuras", "onlyOnce", false)
+				pfItem.setFlag("ActiveAuras", "time", "None")
+				pfItem.setFlag("ActiveAuras", "displayTemp", false)
 			}
 			newChanges.push({
 				_id: AAhelpers.makeid(8),
@@ -332,8 +348,7 @@ class AAhelpers {
 		domObj.on('click', '.delete-change', (event) => {
 			if(jQuery(event.currentTarget).closest("div.tab").attr("data-tab") != "effects") return
 			event.stopPropagation()
-			console.log("delete change click")
-			setTimeout(() => {waitForWindow(windowID)}, 30);
+			setTimeout(() => {AAhelpers.waitForWindow(windowID)}, 50);
 			let newChanges = duplicate(pfItem.data.flags.ActiveAuras.changes)
 			let id = jQuery(event.currentTarget).closest(".change").attr("data-index")
 			newChanges.splice(id, 1)
@@ -342,30 +357,44 @@ class AAhelpers {
 		domObj.on('blur', 'input', (event) => {
 			if(jQuery(event.currentTarget).closest("div.tab").attr("data-tab") != "effects") return
 			event.stopPropagation()
-			console.log("blur click")
-			setTimeout(() => {waitForWindow(windowID)}, 30);
+			setTimeout(() => {AAhelpers.waitForWindow(windowID)}, 50);
 			const a = jQuery(event.currentTarget)
 			let parts = a.attr("name").toString().split('.')
-			let part = parts[parts.length-1]
-			const newChanges = duplicate(pfItem.getFlag("ActiveAuras", "changes"))
-			newChanges[a.closest(".change").attr("data-index")][part] = a.val()
-			pfItem.setFlag("ActiveAuras", "changes", newChanges)
+			if(parts[0] == "auraflags") {
+				pfItem.setFlag("ActiveAuras", parts[1], a.val())
+			}
+			else if(parts[1] == "changes") {
+				let part = parts[parts.length-1]
+				const newChanges = duplicate(pfItem.getFlag("ActiveAuras", "changes"))
+				newChanges[a.closest(".change").attr("data-index")][part] = a.val()
+				pfItem.setFlag("ActiveAuras", "changes", newChanges)
+			}
 		})
 		domObj.on('change', 'select', (event) => {
 			if(jQuery(event.currentTarget).closest("div.tab").attr("data-tab") != "effects") return
 			event.stopPropagation()
-			console.log("select change click")
 			const a = jQuery(event.currentTarget)
-			const newChanges = duplicate(pfItem.getFlag("ActiveAuras", "changes"))
-			newChanges[a.closest(".change").attr("data-index")].operator = a.val()
-			setTimeout(() => {waitForWindow(windowID)}, 30);
-			pfItem.setFlag("ActiveAuras", "changes", newChanges)
+			let parts = a.attr("name").toString().split('.')
+			if(parts[0] == "auraflags") {
+				pfItem.setFlag("ActiveAuras", parts[1], a.val())
+			}
+			else if(parts[1] == "changes") {
+				const newChanges = duplicate(pfItem.getFlag("ActiveAuras", "changes"))
+				newChanges[a.closest(".change").attr("data-index")].operator = a.val()
+				setTimeout(() => {AAhelpers.waitForWindow(windowID)}, 50);
+				pfItem.setFlag("ActiveAuras", "changes", newChanges)
+			}
 		})
 		domObj.on('click', ".change .change-target", (event) => {
 			if(jQuery(event.currentTarget).closest("div.tab").attr("data-tab") != "effects") return
-			console.log("target change click")
 			event.preventDefault();
 			const a = jQuery(event.currentTarget);
+			let parts = a.attr("name").toString().split('.')
+			if(parts[0] == "auraflags") {
+				setTimeout(() => {AAhelpers.waitForWindow(windowID)}, 50);
+				pfItem.setFlag("ActiveAuras", parts[1], a.val())
+				return;
+			}
 
 			const newChanges = duplicate(pfItem.getFlag("ActiveAuras", "changes"))
 			const change = newChanges[a.closest(".change").attr("data-index")]
@@ -379,7 +408,7 @@ class AAhelpers {
 				categories,
 				(key) => {
 					if (key) {
-						setTimeout(() => {waitForWindow(windowID)}, 30);
+						setTimeout(() => {AAhelpers.waitForWindow(windowID)}, 50);
 						newChanges[a.closest(".change").attr("data-index")].subTarget = key
 						pfItem.setFlag("ActiveAuras", "changes", newChanges)
 					}

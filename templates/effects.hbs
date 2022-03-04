@@ -1,3 +1,8 @@
+<style>
+	.auraflags {
+		border: 1px solid #7a7971 !important;
+	}
+</style>
 <div class="tab flexcol" data-group="primary" data-tab="effects">
 	<ol class="items-list changes-list">
 		{{!-- Flags --}}
@@ -9,11 +14,17 @@
 		<ol class="items-list">
 			<li class="item change-flag flexrow">
 				<div class="item-name flag-name flexrow">{{localize "ACTIVEAURAS.FORM_TargetsName"}}</div>
-				<div class="item-enabled flexrow"><input type="text" name="auraflags.aura" value="{{auraflags.aura}}"/></div>
+				<select class="change-operator" name="auraflags.aura">
+					{{#select auraflags.aura }}
+					<option value="Allies">Allies</option>
+					<option value="Enemies">Enemies</option>
+					<option value="All">All</option>
+					{{/select}}
+				</select>
 			</li>
 			<li class="item change-flag flexrow">
 				<div class="item-name flag-name flexrow">{{localize "ACTIVEAURAS.FORM_Radius"}}</div>
-				<div class="item-enabled flexrow"><input type="number" name="auraflags.radius" value="{{auraflags.radius}}"/></div>
+				<div class="item-enabled flexrow"><input class="auraflags" type="number" name="auraflags.radius" value="{{auraflags.radius}}"/></div>
 			</li>
 			<li class="item change-flag flexrow">
 				<div class="item-name flag-name flexrow">{{localize "ACTIVEAURAS.FORM_IgnoreSelf"}}</div>
