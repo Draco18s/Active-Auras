@@ -152,8 +152,7 @@ class ActiveAuras {
             const auraTargets = auraEffect.data.flags?.ActiveAuras?.aura
 
             const { radius, height, hostile, wildcard, extra } = auraEffect.data.flags?.ActiveAuras;
-			if (AAdebug) { console.log(auraEffect.data.flags?.ActiveAuras) }
-            let { type, alignment } = auraEffect;
+			let { type, alignment } = auraEffect;
             const { parentActorLink, parentActorId } = auraEffect
             type = type !== undefined ? type.toLowerCase() : "";
             alignment = alignment !== undefined ? alignment.toLowerCase() : "";
@@ -224,7 +223,6 @@ class ActiveAuras {
             const MapKey = auraEffect.data.label + "-" + canvasToken.id + "-" + auraEntity.id;
             MapObject = map.get(MapKey);
 
-			if (AAdebug) { console.log(auraEffect) }
             if (distance && !auraEffect.data.flags?.ActiveAuras?.Paused) {
 				if (AAdebug) { console.log(MapObject) }
                 if (MapObject) {
@@ -352,6 +350,7 @@ class ActiveAuras {
 		if(game.system.id === "pf1") {
 			for (const tokenEffects of token.actor.items) {
 				if(tokenEffects.data.flags?.ActiveAuras?.effectid == effect.flags.ActiveAuras.effectid) {
+					console.log(tokenEffects.id)
 					await token.actor.deleteEmbeddedDocuments("Item", [tokenEffects.id]);
 				}
 			}
