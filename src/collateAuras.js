@@ -97,6 +97,24 @@ function GetPathfinderEffects(pf1Actor) {
 			});
 		}
 	}
+	for (let pfItem of pf1Actor.data.effects) {
+		let changes = pfItem.flags.ActiveAuras.changes
+		if(changes) {
+			effects.push({
+				data: {
+					label:pfItem.name,
+					origin:`Actor.${pf1Actor.id}.Item.${pfItem.id}`,
+					flags:duplicate(pfItem.data.flags),
+					disabled: pfItem.data.data.disabled,
+					img:pfItem.data.img,
+					changes:duplicate(changes)
+				},
+				label:pfItem.name,
+				parent:pfItem.parent,
+				origin:`Actor.${pf1Actor.id}.Item.${pfItem.id}`
+			});
+		}
+	}
 	return effects;
 }
 
