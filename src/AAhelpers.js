@@ -289,7 +289,9 @@ class AAhelpers {
 				aura: (pfItem ? pfItem.data.flags.ActiveAuras?.aura : "Allies"),
 				radius: (pfItem ? pfItem.data.flags.ActiveAuras?.radius : 0),
 				ignoreSelf: (pfItem ? pfItem.data.flags.ActiveAuras?.ignoreSelf : false),
+				height: (pfItem ? pfItem.data.flags.ActiveAuras?.height : false),
 				alignment: (pfItem ? pfItem.data.flags.ActiveAuras?.alignment : ""),
+				type: (pfItem ? pfItem.data.flags.ActiveAuras?.type : ""),
 				owner: pfItem.isOwner,
 			},
 			effects: pfItem?.data?.flags?.ActiveAuras?.changes,
@@ -373,6 +375,7 @@ class AAhelpers {
 		domObj.on('change', 'select', (event) => {
 			if(jQuery(event.currentTarget).closest("div.tab").attr("data-tab") != "effects") return
 			event.stopPropagation()
+			setTimeout(() => {AAhelpers.waitForWindow(windowID)}, 50);
 			const a = jQuery(event.currentTarget)
 			let parts = a.attr("name").toString().split('.')
 			if(parts[0] == "auraflags") {
@@ -381,17 +384,16 @@ class AAhelpers {
 			else if(parts[1] == "changes") {
 				const newChanges = duplicate(pfItem.getFlag("ActiveAuras", "changes"))
 				newChanges[a.closest(".change").attr("data-index")].operator = a.val()
-				setTimeout(() => {AAhelpers.waitForWindow(windowID)}, 50);
 				pfItem.setFlag("ActiveAuras", "changes", newChanges)
 			}
 		})
 		domObj.on('click', "input:checkbox", (event) => {
 			if(jQuery(event.currentTarget).closest("div.tab").attr("data-tab") != "effects") return
 			event.preventDefault();
+			setTimeout(() => {AAhelpers.waitForWindow(windowID)}, 50);
 			const a = jQuery(event.currentTarget);
 			let parts = a.attr("name").toString().split('.')
 			if(parts[0] == "auraflags") {
-				setTimeout(() => {AAhelpers.waitForWindow(windowID)}, 50);
 				pfItem.setFlag("ActiveAuras", parts[1], !pfItem.getFlag("ActiveAuras", parts[1]))
 				return;
 			}
