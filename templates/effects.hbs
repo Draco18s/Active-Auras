@@ -27,6 +27,10 @@
 				<div class="item-enabled flexrow"><input class="auraflags" type="number" name="auraflags.radius" value="{{auraflags.radius}}"/></div>
 			</li>
 			<li class="item change-flag flexrow">
+				<div class="item-name flag-name flexrow">{{localize "ACTIVEAURAS.FORM_Height"}}</div>
+				<div class="item-enabled flexrow"><input type="checkbox" name="auraflags.height" {{checked auraflags.height}}/></div>
+			</li>
+			<li class="item change-flag flexrow">
 				<div class="item-name flag-name flexrow">{{localize "ACTIVEAURAS.FORM_IgnoreSelf"}}</div>
 				<div class="item-enabled flexrow"><input type="checkbox" name="auraflags.ignoreSelf" {{checked auraflags.ignoreSelf}}/></div>
 			</li>
@@ -34,7 +38,7 @@
 				<div class="item-name flag-name flexrow">{{localize "ACTIVEAURAS.FORM_Alignment"}}</div>
 				<div class="item-modifier flexrow">
 					<select class="change-modifier" name="auraflags.alignment">
-						{{#select (lookup auraflags.alignment "alignment") }}
+						{{#select (lookup auraflags "alignment") }}
 						<option value="">{{None}}</option>
 						{{#each alignmentsShort as |name type|}}
 						<option value="{{type}}">{{localize name}}</option>
@@ -42,6 +46,10 @@
 						{{/select}}
 					</select>
 				</div>
+			</li>
+			<li class="item change-flag flexrow">
+				<div class="item-name flag-name flexrow">{{localize "ACTIVEAURAS.FORM_TypePrompt"}}</div>
+				<div class="item-enabled flexrow"><input class="auraflags" type="text" name="auraflags.type" value="{{auraflags.type}}"/></div>
 			</li>
 		</ol>
 

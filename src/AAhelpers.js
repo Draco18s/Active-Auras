@@ -293,7 +293,7 @@ class AAhelpers {
 				owner: pfItem.isOwner,
 			},
 			effects: pfItem?.data?.flags?.ActiveAuras?.changes,
-			alignmentsShort:CONFIG.PF1.alignmentsShort,
+			alignmentsShort:["good","neutral","evil"],
 			changeModifiers:CONFIG.PF1.bonusModifiers
 		}
 		if(templateData.effects?.length > 0) {
@@ -324,7 +324,7 @@ class AAhelpers {
 				pfItem.setFlag("ActiveAuras", "inactive", false)
 				pfItem.setFlag("ActiveAuras", "hidden", false)
 				pfItem.setFlag("ActiveAuras", "ignoreSelf", false)
-				pfItem.setFlag("ActiveAuras", "height", false)
+				pfItem.setFlag("ActiveAuras", "height", true)
 				pfItem.setFlag("ActiveAuras", "alignment", "")
 				pfItem.setFlag("ActiveAuras", "type", "")
 				pfItem.setFlag("ActiveAuras", "save", "")
@@ -383,6 +383,17 @@ class AAhelpers {
 				newChanges[a.closest(".change").attr("data-index")].operator = a.val()
 				setTimeout(() => {AAhelpers.waitForWindow(windowID)}, 50);
 				pfItem.setFlag("ActiveAuras", "changes", newChanges)
+			}
+		})
+		domObj.on('click', "input:checkbox", (event) => {
+			if(jQuery(event.currentTarget).closest("div.tab").attr("data-tab") != "effects") return
+			event.preventDefault();
+			const a = jQuery(event.currentTarget);
+			let parts = a.attr("name").toString().split('.')
+			if(parts[0] == "auraflags") {
+				setTimeout(() => {AAhelpers.waitForWindow(windowID)}, 50);
+				pfItem.setFlag("ActiveAuras", parts[1], !pfItem.getFlag("ActiveAuras", parts[1]))
+				return;
 			}
 		})
 		domObj.on('click', ".change .change-target", (event) => {
