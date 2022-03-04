@@ -15,7 +15,8 @@ async function CollateAuras(sceneID, checkAuras, removeAuras, source) {
             if (AAdebug) console.log(`Skipping ${testToken.name}, 0hp`)
             continue
         }
-        for (let testEffect of testToken?.actor?.effects.contents) {
+		let effectsArray = (game.system.id == "pf1" ? GetPathfinderEffects(testToken?.actor) : testToken?.actor?.effects.contents)
+        for (let testEffect of effectsArray) {
             if (testEffect.data.flags?.ActiveAuras?.isAura) {
                 if (testEffect.data.disabled) continue;
                 let newEffect = { 
@@ -73,6 +74,24 @@ async function CollateAuras(sceneID, checkAuras, removeAuras, source) {
     if (removeAuras) {
         AAhelpers.RemoveAppliedAuras(canvas)
     }
+}
+
+function GetPathfinderEffects(pf1Actor) {
+	let effects = [];
+	for (let pfItem of pf1Actor.data.items) {
+		let changes = pfItem.getFlag("ActiveAuras", "changes")
+		if(changes) {
+			effects.push({
+				data: {
+					flags:duplicate(pfItem.data.flags),
+					disabled: pfItem.data.data.disabled,
+					img:pfItem.data.img
+				},
+				parent:pfItem.parent
+			});
+		}
+	}
+	return effects;
 }
 
 function RetrieveTemplateAuras(effectArray) {
