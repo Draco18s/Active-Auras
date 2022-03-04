@@ -19,7 +19,9 @@ async function CollateAuras(sceneID, checkAuras, removeAuras, source) {
         for (let testEffect of effectsArray) {
             if (testEffect.data.flags?.ActiveAuras?.isAura) {
                 if (testEffect.data.disabled) continue;
-                let newEffect = { 
+				let newEffect = {
+					label: testEffect.label,
+					origin: testEffect.origin,
 					data: duplicate(testEffect.data),
 					parentActorLink: testEffect.parent.data.token.actorLink,
 					parentActorId: testEffect.parent.id,
@@ -88,6 +90,7 @@ function GetPathfinderEffects(pf1Actor) {
 					img:pfItem.data.img,
 					changes:duplicate(changes)
 				},
+				label:pfItem.name,
 				parent:pfItem.parent,
 				origin:`Actor.${pf1Actor.id}.Item.${pfItem.id}`
 			});
