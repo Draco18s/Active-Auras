@@ -85,9 +85,11 @@ function GetPathfinderEffects(pf1Actor) {
 				data: {
 					flags:duplicate(pfItem.data.flags),
 					disabled: pfItem.data.data.disabled,
-					img:pfItem.data.img
+					img:pfItem.data.img,
+					changes:duplicate(changes)
 				},
-				parent:pfItem.parent
+				parent:pfItem.parent,
+				origin:`Actor.${pf1Actor.id}.Item.${pfItem.id}`
 			});
 		}
 	}
