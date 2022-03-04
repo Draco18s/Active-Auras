@@ -436,19 +436,22 @@ class AAhelpers {
 	static waitForWindow(target) {
 		let area = jQuery(target)
 		if(area.length == 0) {
-			setTimeout(() => {AAhelpers.waitForWindow(target)}, 3);
+			setTimeout(() => {AAhelpers.waitForWindow(target)}, 3)
 			return;
 		}
 		let nav = area.find("nav[data-group='primary']")
 		let sec = area.find("section.primary-body")
 		if(nav.find(".active").attr("data-tab") == "effects") {
-			setTimeout(() => {AAhelpers.waitForWindow(target)}, 3);
+			setTimeout(() => {AAhelpers.waitForWindow(target)}, 3)
 			return;
 		}
 		nav.find(".active").removeClass("active")
 		nav.find(".item[data-tab='effects']").addClass("active")
 		sec.find(".active").removeClass("active")
 		sec.find(".tab[data-tab='effects']").addClass("active")
+		
+		AuraMap = new Map()
+		CollateAuras(canvas.id, true, false)
 	}
 
 	static makeid(length) {

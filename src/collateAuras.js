@@ -67,7 +67,6 @@ async function CollateAuras(sceneID, checkAuras, removeAuras, source) {
         AuraMap.set(MapKey, { effects: effectArray })
     }
 
-
     if (AAdebug) console.log(AuraMap)
 
     if (checkAuras) {
