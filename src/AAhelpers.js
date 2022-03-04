@@ -283,9 +283,7 @@ class AAhelpers {
 
 	static buildEffectsHtmlEditor(tabs, section, sheet, pfItem) {
 		if(pfItem.data.constructor.name != "ItemData") return
-		windowOpen = true
-		//if(pfItem.data.effects.some(ef => ef.data.effectid)) return //todo: remove
-		//effect
+		let windowID = "#actor-"+pfItem.parent.id+"-item-"+pfItem.id
 		let templateData = {
 			auraflags: {
 				aura: (pfItem ? pfItem.data.flags.ActiveAuras?.aura : "Allies"),
@@ -315,7 +313,7 @@ class AAhelpers {
 			if(jQuery(event.currentTarget).closest("div.tab").attr("data-tab") != "effects") return
 			event.stopPropagation()
 			console.log("add change click")
-			setTimeout(() => {waitForWindow()}, 10);
+			setTimeout(() => {waitForWindow(windowID)}, 30);
 			let newChanges = []
 			if(pfItem.data.flags.ActiveAuras?.changes) {
 				newChanges = duplicate(pfItem.getFlag("ActiveAuras", "changes"))
@@ -335,7 +333,7 @@ class AAhelpers {
 			if(jQuery(event.currentTarget).closest("div.tab").attr("data-tab") != "effects") return
 			event.stopPropagation()
 			console.log("delete change click")
-			setTimeout(() => {waitForWindow()}, 10);
+			setTimeout(() => {waitForWindow(windowID)}, 30);
 			let newChanges = duplicate(pfItem.data.flags.ActiveAuras.changes)
 			let id = jQuery(event.currentTarget).closest(".change").attr("data-index")
 			newChanges.splice(id, 1)
@@ -345,7 +343,7 @@ class AAhelpers {
 			if(jQuery(event.currentTarget).closest("div.tab").attr("data-tab") != "effects") return
 			event.stopPropagation()
 			console.log("blur click")
-			setTimeout(() => {waitForWindow()}, 10);
+			setTimeout(() => {waitForWindow(windowID)}, 30);
 			const a = jQuery(event.currentTarget)
 			let parts = a.attr("name").toString().split('.')
 			let part = parts[parts.length-1]
@@ -360,10 +358,8 @@ class AAhelpers {
 			const a = jQuery(event.currentTarget)
 			const newChanges = duplicate(pfItem.getFlag("ActiveAuras", "changes"))
 			newChanges[a.closest(".change").attr("data-index")].operator = a.val()
-			setTimeout(() => {waitForWindow()}, 10);
+			setTimeout(() => {waitForWindow(windowID)}, 30);
 			pfItem.setFlag("ActiveAuras", "changes", newChanges)
-			tabObject = tabs
-			windowOpen = false
 		})
 		domObj.on('click', ".change .change-target", (event) => {
 			if(jQuery(event.currentTarget).closest("div.tab").attr("data-tab") != "effects") return
@@ -383,11 +379,9 @@ class AAhelpers {
 				categories,
 				(key) => {
 					if (key) {
-						setTimeout(() => {waitForWindow()}, 10);
+						setTimeout(() => {waitForWindow(windowID)}, 30);
 						newChanges[a.closest(".change").attr("data-index")].subTarget = key
 						pfItem.setFlag("ActiveAuras", "changes", newChanges)
-						tabObject = tabs
-						windowOpen = false
 					}
 				},
 				{ category, item: change?.subTarget }
@@ -397,11 +391,18 @@ class AAhelpers {
 		});
 	}
 
-	static waitForWindow() {
-		let area = jQuery("#actor-"+pfItem.parent.id+"-item-"+pfItem.id)
-		if(!area) setTimeout(() => {waitForWindow()}, 10);
+	static waitForWindow(target) {
+		let area = jQuery(target)
+		if(area.length == 0) {
+			setTimeout(() => {AAhelpers.waitForWindow(target)}, 3);
+			return;
+		}
 		let nav = area.find("nav[data-group='primary']")
 		let sec = area.find("section.primary-body")
+		if(nav.find(".active").attr("data-tab") == "effects") {
+			setTimeout(() => {AAhelpers.waitForWindow(target)}, 3);
+			return;
+		}
 		nav.find(".active").removeClass("active")
 		nav.find(".item[data-tab='effects']").addClass("active")
 		sec.find(".active").removeClass("active")
