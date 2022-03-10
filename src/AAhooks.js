@@ -44,6 +44,10 @@ Hooks.on("createToken", (token) => {
     }
 });
 
+/*Hooks.on("createItem", (item,itemData,misc,id) => {
+
+});*/
+
 Hooks.on("updateCombat", async (combat, changed, options, userId) => {
     if(canvas.scene === null) {if(AAdebug) {console.log("Active Auras disabled due to no canvas")} return}
     if (changed.round === 1) {
@@ -207,8 +211,20 @@ Hooks.on("createCombatant", (combat, combatant) => {
 Hooks.on("renderItemSheet", (sheet, html, css) => {
 	if(canvas.scene === null) {if(AAdebug) {console.log("Active Auras disabled due to no canvas")} return}
 	if(!(game.system.id === "pf1")) return
-	let tabs = html.find("nav.sheet-navigation.tabs")
+	let tabs = html.find("nav.tabs[data-group='primary']")
 	let section = html.find("section.primary-body")
 	if(tabs && section)
 		AAhelpers.buildEffectsHtmlEditor(tabs, section, sheet, sheet.object)
+})
+
+/*Hooks.on("getItemSheetHeaderButtons", (sheet,buttonList) => {
+	let tabs = html.find("nav.tabs[data-group='primary']")
+	tabs.append('<a class="item" data-tab="effects">Effects</a>')
+})*/
+
+Hooks.on("updateItem", (item,data,flags,id) => {
+	if(!(game.system.id === "pf1")) return
+	if(data.flags?.ActiveAuras) {
+		CollateAuras(combat.scene.id, true, true, "item updated")
+	}
 })

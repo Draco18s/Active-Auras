@@ -98,18 +98,18 @@ function GetPathfinderEffects(pf1Actor) {
 		}
 	}
 	for (let pfItem of pf1Actor.data.effects) {
-		let changes = pfItem.flags.ActiveAuras.changes
+		let changes = pfItem.data.flags?.ActiveAuras?.changes
 		if(changes) {
 			effects.push({
 				data: {
-					label:pfItem.name,
+					label:pfItem.data.label,
 					origin:`Actor.${pf1Actor.id}.Item.${pfItem.id}`,
 					flags:duplicate(pfItem.data.flags),
-					disabled: pfItem.data.data.disabled,
+					disabled: pfItem.data.disabled,
 					img:pfItem.data.img,
 					changes:duplicate(changes)
 				},
-				label:pfItem.name,
+				label:pfItem.data.label,
 				parent:pfItem.parent,
 				origin:`Actor.${pf1Actor.id}.Item.${pfItem.id}`
 			});
