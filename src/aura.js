@@ -350,8 +350,8 @@ class ActiveAuras {
 		if(game.system.id === "pf1") {
 			for (const tokenEffects of token.actor.items) {
 				if(tokenEffects.data.flags?.ActiveAuras?.effectid == effect.flags.ActiveAuras.effectid) {
-					console.log(tokenEffects.id)
 					await token.actor.deleteEmbeddedDocuments("Item", [tokenEffects.id]);
+					if (AAdebug) console.log(game.i18n.format("ACTIVEAURAS.RemoveLog", { effectDataLabel: effect.label, tokenName: token.name }))
 				}
 			}
 		}

@@ -225,6 +225,6 @@ Hooks.on("renderItemSheet", (sheet, html, css) => {
 Hooks.on("updateItem", (item,data,flags,id) => {
 	if(!(game.system.id === "pf1")) return
 	if(data.flags?.ActiveAuras) {
-		CollateAuras(combat.scene.id, true, true, "item updated")
+		debouncedCollate(canvas.scene.id, true, true, "item updated")
 	}
 })
