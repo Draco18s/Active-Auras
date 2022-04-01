@@ -124,20 +124,20 @@ class ActiveAuras {
      * @param {Token} canvasToken - single token to test
      */
     static UpdateToken(map, canvasToken, tokenId) {
-        if (canvasToken.data.flags['multilevel-tokens']) return;
-        if (canvasToken.actor === null) return;
+        if (canvasToken.data.flags['multilevel-tokens']) return
+        if (canvasToken.actor === null) return
         if (canvasToken.actor.data.type == "vehicle") return
         let tokenAlignment;
         if (game.system.id === "dnd5e" || game.system.id === "sw5e" || game.system.id === "pf1") {
             try {
-                tokenAlignment = canvasToken.actor?.data.data.details.alignment.toLowerCase();
+                tokenAlignment = canvasToken.actor?.data.data.details.alignment.toLowerCase()
             } catch (error) {
                 console.error([`ActiveAuras: the token has an unreadable alignment`, canvasToken])
             }
         }
-        const MapKey = canvasToken.scene.id;
+        const MapKey = canvasToken.scene.id
         let MapObject = AuraMap.get(MapKey)
-        let checkEffects = MapObject.effects;
+        let checkEffects = MapObject.effects
         //Check for other types of X aura if the aura token is moved
         if (tokenId && canvasToken.id !== tokenId) {
             checkEffects = checkEffects.filter(i => i.entityId === tokenId)
@@ -151,14 +151,14 @@ class ActiveAuras {
         for (const auraEffect of checkEffects) {
             const auraTargets = auraEffect.data.flags?.ActiveAuras?.aura
 
-            const { radius, height, hostile, wildcard, extra } = auraEffect.data.flags?.ActiveAuras;
-			let { type, alignment } = auraEffect;
+            const { radius, height, hostile, wildcard, extra } = auraEffect.data.flags?.ActiveAuras
+			let { type, alignment } = auraEffect
             const { parentActorLink, parentActorId } = auraEffect
             type = type !== undefined ? type.toLowerCase() : "";
-            alignment = alignment !== undefined ? alignment.toLowerCase() : "";
-            if (alignment && !tokenAlignment.includes(alignment) && !tokenAlignment.includes("any")) continue; // cleaned up alignment check and moved here. 
+            alignment = alignment !== undefined ? alignment.toLowerCase() : ""
+            if (alignment && !tokenAlignment.includes(alignment) && !tokenAlignment.includes("any")) continue // cleaned up alignment check and moved here. 
 
-            let auraEntity, distance;
+            let auraEntity, distance
             /*
             let auraType = auraEffect.data.flags?.ActiveAuras?.type !== undefined ? auraEffect.data.flags?.ActiveAuras?.type.toLowerCase() : "";
             let auraAlignment = auraEffect.data.flags?.ActiveAuras?.alignment !== undefined ? auraEffect.data.flags?.ActiveAuras?.alignment.toLowerCase() : "";
@@ -350,6 +350,13 @@ class ActiveAuras {
 		if(game.system.id === "pf1") {
 			for (const tokenEffects of token.actor.items) {
 				if(tokenEffects.data.flags?.ActiveAuras?.effectid == effect.flags.ActiveAuras.effectid) {
+					//workaround for FVTT-PF1 issue #941
+					//set active to false (this removes the buff icon from the token)
+					await token.actor.updateEmbeddedDocuments("Item", [ {
+							_id: tokenEffects.id,
+							"data" : { "active":false }
+						}]);
+					//then remove the buff
 					await token.actor.deleteEmbeddedDocuments("Item", [tokenEffects.id]);
 					if (AAdebug) console.log(game.i18n.format("ACTIVEAURAS.RemoveLog", { effectDataLabel: effect.label, tokenName: token.name }))
 				}
