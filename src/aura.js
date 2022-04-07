@@ -224,7 +224,6 @@ class ActiveAuras {
             MapObject = map.get(MapKey);
 
             if (distance && !auraEffect.data.flags?.ActiveAuras?.Paused) {
-				if (AAdebug) { console.log(MapObject) }
                 if (MapObject) {
                     MapObject.add = true
                 }

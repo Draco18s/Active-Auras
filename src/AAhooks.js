@@ -22,7 +22,6 @@ Hooks.on("ready", () => {
     AAgm = game.user === game.users.find((u) => u.isGM && u.active)
     CollateAuras(canvas.id, true, false)
 
-
     if (game.settings.get("ActiveAuras", "debug")) AAdebug = true
 })
 
@@ -114,7 +113,6 @@ Hooks.on("updateActiveEffect", (effect, _update) => {
 Hooks.on("deleteActiveEffect", (effect) => {
     if(canvas.scene === null) {if(AAdebug) {console.log("Active Auras disabled due to no canvas")} return}
     if (!AAgm) return;
-	console.log("Active Auras deleteActiveEffect hook");
     let applyStatus = effect.data.flags?.ActiveAuras?.applied;
     let auraStatus = effect.data.flags?.ActiveAuras?.isAura;
     if (!applyStatus && auraStatus) {
@@ -172,7 +170,6 @@ Hooks.on("deleteMeasuredTemplate", (doc) => {
     //if (!getProperty(data, "flags.ActiveAuras")) return;
     AAhelpers.ExtractAuraById(doc.id, doc.parent.id)
     //ActiveAuras.CollateAuras(scene._id, false, true, "template deletion")
-
 })
 
 Hooks.on("deleteCombat", (combat) => {

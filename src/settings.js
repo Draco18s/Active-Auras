@@ -58,5 +58,8 @@ Hooks.on('init', () => {
         config: true,
         default: false,
         type: Boolean,
+        onChange: () => {
+            AAdebug = game.settings.get("ActiveAuras", "debug")
+        }
     });
 });
