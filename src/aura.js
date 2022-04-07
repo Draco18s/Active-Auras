@@ -345,6 +345,9 @@ class ActiveAuras {
      * @param {String} effectLabel - label of effect to remove
      */
 	static async RemoveActiveEffects(tokenID, effect) {
+		if(effect == null || effect.flags == null || effect.flags.ActiveAuras == null || effect.flags.ActiveAuras.effectid == null) {
+			if (AAdebug) console.log("Attempted to remove an undefined effect!");
+		}
 		const token = canvas.tokens.get(tokenID)
 		if(game.system.id === "pf1") {
 			for (const tokenEffects of token.actor.items) {
