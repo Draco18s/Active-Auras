@@ -346,7 +346,9 @@ class ActiveAuras {
      */
 	static async RemoveActiveEffects(tokenID, effect) {
 		if(effect === undefined || effect.flags === undefined || effect.flags.ActiveAuras === undefined || effect.flags.ActiveAuras.effectid === undefined) {
-			if (AAdebug) console.log("Attempted to remove an undefined effect!");
+			//emergency "oh god invalid effect" detection
+			//return to prevent data loss due to undefined === undefined
+			if (AAdebug) console.log("Invalid effect! What are you!?\n" + JSON.stringify(effect));
 			return;
 		}
 		const token = canvas.tokens.get(tokenID)
@@ -356,9 +358,9 @@ class ActiveAuras {
 					//workaround for FVTT-PF1 issue #941
 					//set active to false (this removes the buff icon from the token)
 					await token.actor.updateEmbeddedDocuments("Item", [ {
-							_id: tokenEffects.id,
-							"data" : { "active":false }
-						}]);
+						_id: tokenEffects.id,
+						"data" : { "active":false }
+					}]);
 					//then remove the buff
 					await token.actor.deleteEmbeddedDocuments("Item", [tokenEffects.id]);
 					if (AAdebug) console.log(game.i18n.format("ACTIVEAURAS.RemoveLog", { effectDataLabel: effect.label, tokenName: token.name }))
